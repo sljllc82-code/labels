@@ -74,20 +74,19 @@ body {
   font-size: 12px;
   font-weight: 700;
 }
-/* US Men's value – no label above it, and slightly larger than before */
+/* US Men's value – no label, larger */
 #l-mens {
-  font-size: 42px !important; /* increased from 36px for a bit larger */
+  font-size: 42px !important;
   line-height: 1;
 }
-/* Hide the US M label specifically */
-#l-mens + .size-label { display: none; } /* not needed since we removed the label HTML */
 /* BR size group */
 #br-group {
   margin-top: 8px;
 }
 .sku-madein {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; /* changed from space-between */
+  gap: 20px; /* adds controlled space between SKU and Made In */
   align-items: baseline;
   margin-bottom: 6px;
 }
@@ -222,10 +221,10 @@ const sizeMap = {
   "12.5": { uk: "11.5", eu: "47", cm: "30.5", womens: "14", br: "44.5" },
   "13": { uk: "12", eu: "47.5", cm: "31", womens: "14.5", br: "45" },
   "14": { uk: "13", eu: "48.5", cm: "32", womens: "15.5", br: "46" },
-  "15": { uk: "14", eu: "49.5", cm: "33", womens: "16.5", br: "47" },
-  "16": { uk: "15", eu: "50.5", cm: "34", womens: "17.5", br: "48" },
-  "17": { uk: "16", eu: "51.5", cm: "35", womens: "18.5", br: "49" },
-  "18": { uk: "17", eu: "52.5", cm: "36", womens: "19.5", br: "50" }
+  "15": { uk: "14", eu: "49.5", cm: "33", womens: "", br: "47" },
+  "16": { uk: "15", eu: "50.5", cm: "34", womens: "", br: "48" },
+  "17": { uk: "16", eu: "51.5", cm: "35", womens: "", br: "49" },
+  "18": { uk: "17", eu: "52.5", cm: "36", womens: "", br: "50" }
 };
 
 document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("change", updateLabel));
