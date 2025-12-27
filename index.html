@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Shoe Label Generator</title>
+
+<!-- Fonts (Nike-style substitutes) -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Barcode library -->
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+
+<style>
+body {
+  font-family: Inter, sans-serif;
+  background: #f4f4f4;
+  padding: 20px;
+}
+
+/* FORM */
+.form {
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* LABEL */
+.label {
+  width: 4in;
+  height: 2.5in;
+  background: #fff;
+  color: #000;
+  padding: 0.2in;
+  box-sizing: border-box;
+  border: 1px solid #000;
+}
+
+.brand {
+  font-family: Montserrat, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.model {
+  font-family: Montserrat, sans-serif;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.sizes {
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.details {
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.barcode {
+  margin-top: 4px;
+}
+
+/* PRINT SETTINGS */
+@media print {
+  body {
+    background: none;
+    padding: 0;
+  }
+
+  .form {
+    display: none;
+  }
+
+  .label {
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="form">
+  <input id="brand" placeholder="Brand (NIKE)" value="NIKE">
+  <input id="model" placeholder="Model (AIR JORDAN 1 RETRO HIGH OG)">
+  <input id="mens" placeholder="Men's Size (10)">
+  <input id="womens" placeholder="Women's Size (11.5)">
+  <input id="uk" placeholder="UK Size (9)">
+  <input id="eu" placeholder="EU Size (44)">
+  <input id="cm" placeholder="CM (28)">
+  <input id="color" placeholder="Colorway (BLACK / RED)">
+  <input id="sku" placeholder="Style Code / SKU (DZ5485-612)">
+</div>
+
+<div class="label">
+  <div class="brand" id="l-brand">NIKE</div>
+  <div class="model" id="l-model"></div>
+
+  <div class="sizes" id="l-sizes"></div>
+
+  <div class="details" id="l-color"></div>
+  <div class="details" id="l-sku"></div>
+
+  <svg id="barcode"></svg>
+</div>
+
+<script>
+const inputs = document.querySelectorAll("input");
+
+inputs.forEach(input => {
+  input.addEventListener("input", updateLabel);
+});
+
+function updateLabel() {
+  document.getElementById("l-brand").innerText =
+    document.getElementById("brand").value;
+
+  document.getElementById("l-model").innerText =
+    document.getElementById("model").value;
+
+  document.getElementById("l-sizes").innerText =
+    `MENS ${mens.value}  |  WMNS ${womens.value}  |  UK ${uk.value}  |  EUR ${eu.value}  |  CM ${cm.value}`;
+
+  document.getElementById("l-color").innerText =
+    `COLOR: ${color.value}`;
+
+  document.getElementById("l-sku").innerText =
+    `STYLE: ${sku.value}`;
+
+  JsBarcode("#barcode", sku.value || "000000", {
+    format: "CODE128",
+    width: 1.3,
+    height: 40,
+    displayValue: false
+  });
+}
+
+updateLabel();
+</script>
+
+</body>
+</html>
