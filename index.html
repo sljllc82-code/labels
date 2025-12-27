@@ -25,12 +25,12 @@ body {
 }
 .form input.full, .form select.full { grid-column: span 2; }
 .label {
-  width: 3.2in;          /* 4in × 0.8 = 80% */
-  height: 2in;           /* 2.5in × 0.8 = 80% */
+  width: 3.2in;
+  height: 2in;
   background: #fff;
   border: 1px solid #000;
   box-sizing: border-box;
-  padding: 0.2in 0.28in; /* scaled down proportionally */
+  padding: 0.2in 0.28in;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -41,14 +41,14 @@ body {
   letter-spacing: 0.8px;
 }
 .model {
-  font-size: 15.2px;     /* 19px × 0.8 */
+  font-size: 15.2px;
   font-weight: 700;
   margin-bottom: 16px;
   line-height: 1.2;
   text-align: left;
 }
 .sizes {
-  font-size: 12px;       /* 15px × 0.8 */
+  font-size: 12px;
   margin-bottom: 14.4px;
   display: flex;
   flex-wrap: wrap;
@@ -58,32 +58,31 @@ body {
   text-align: center;
 }
 .size-label {
-  font-size: 8px;        /* 10px × 0.8 */
+  font-size: 8px;
   font-weight: 300;
   color: #444;
   margin-bottom: 2.4px;
   letter-spacing: 1px;
 }
 .size-value {
-  font-size: 12px;       /* 15px × 0.8 */
+  font-size: 12px;
   font-weight: 700;
 }
 .colorway {
-  font-size: 12px;       /* 15px × 0.8 */
+  font-size: 12px;
   font-weight: 700;
   margin-bottom: 6.4px;
   text-align: left;
 }
 .sku {
-  font-size: 12px;       /* 15px × 0.8 */
+  font-size: 12px;
   font-weight: 700;
   margin-bottom: 6.4px;
   text-align: left;
 }
 .madein {
-  font-size: 10.4px;     /* 13px × 0.8 */
+  font-size: 10.4px;
   font-weight: 500;
-  margin-bottom: 9.6px;
   text-align: left;
 }
 .barcode-container {
@@ -93,7 +92,7 @@ body {
 }
 .barcode-container svg {
   width: 70%;
-  height: 40px;          /* 50px × 0.8 */
+  height: 40px;
 }
 /* PRINT SETTINGS */
 @media print {
@@ -113,6 +112,7 @@ body {
   <input id="cm" placeholder="CM (28)" value="28">
   <input id="color" placeholder="Colorway (BLACK/RED/WHITE)" value="BLACK/RED/WHITE" class="full">
   <input id="sku" placeholder="Style Code (DZ5485-612)" value="DZ5485-612" class="full">
+  <input id="upc" placeholder="UPC / Barcode Number (e.g. 196608123456)" class="full" value="196608123456">
   
   <select id="madein" class="full">
     <option value="MADE IN VIETNAM">MADE IN VIETNAM</option>
@@ -173,6 +173,7 @@ const inputs = {
   cm: document.getElementById("cm"),
   color: document.getElementById("color"),
   sku: document.getElementById("sku"),
+  upc: document.getElementById("upc"),
   madein: document.getElementById("madein")
 };
 
@@ -189,10 +190,12 @@ function updateLabel() {
   document.getElementById("l-sku").innerText = inputs.sku.value.toUpperCase();
   document.getElementById("l-madein").innerText = inputs.madein.value;
 
-  JsBarcode("#barcode", inputs.sku.value || "000000000", {
-    format: "CODE128",
+  // Barcode generated from UPC input field only
+  const upcValue = inputs.upc.value.trim() || "000000000000";
+  JsBarcode("#barcode", upcValue, {
+    format: upcValue.length === 12 ? "UPC" : (upcValue.length === 13 ? "EAN13" : "CODE128"),
     width: 2,
-    height: 50,
+    height: 40,
     displayValue: false,
     margin: 0,
     flat: true
