@@ -40,20 +40,16 @@ body {
   box-sizing: border-box;
 }
 
-/* VERTICAL BRAND */
-.brand-vertical {
-  width: 0.45in;
+/* VERTICAL BARCODE */
+.barcode-vertical {
+  width: 0.55in;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.brand-vertical span {
+.barcode-vertical svg {
   transform: rotate(-90deg);
-  font-family: Montserrat, sans-serif;
-  font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 1px;
 }
 
 /* CONTENT */
@@ -61,6 +57,13 @@ body {
   flex: 1;
   padding: 0.18in;
   box-sizing: border-box;
+}
+
+.brand {
+  font-family: Montserrat, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.5px;
 }
 
 .model {
@@ -77,10 +80,6 @@ body {
 .detail {
   font-size: 10.5px;
   margin-bottom: 2px;
-}
-
-svg {
-  margin-top: 2px;
 }
 
 /* PRINT */
@@ -103,26 +102,31 @@ svg {
 </div>
 
 <div class="label">
-  <div class="brand-vertical">
-    <span id="l-brand">NIKE</span>
+
+  <!-- VERTICAL BARCODE -->
+  <div class="barcode-vertical">
+    <svg id="barcode"></svg>
   </div>
 
+  <!-- MAIN CONTENT -->
   <div class="content">
+    <div class="brand" id="l-brand">NIKE</div>
     <div class="model" id="l-model"></div>
 
     <div class="size-row" id="l-sizes"></div>
 
     <div class="detail" id="l-color"></div>
     <div class="detail" id="l-sku"></div>
-
-    <svg id="barcode"></svg>
   </div>
+
 </div>
 
 <script>
 document.querySelectorAll("input").forEach(i =>
   i.addEventListener("input", updateLabel)
 );
+
+const usInput = document.getElementById("us");
 
 function updateLabel() {
   const us = parseFloat(usInput.value);
@@ -153,7 +157,6 @@ function updateLabel() {
   });
 }
 
-const usInput = document.getElementById("us");
 updateLabel();
 </script>
 
