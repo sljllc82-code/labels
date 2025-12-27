@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <title>Authentic Nike Shoe Label Generator</title>
-<!-- Fonts: Helvetica Neue for authenticity -->
 <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<!-- Barcode library -->
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <style>
 body {
@@ -20,12 +18,12 @@ body {
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
-.form input {
+.form input, .form select {
   padding: 10px;
   font-size: 16px;
   box-sizing: border-box;
 }
-.form input.full { grid-column: span 2; }
+.form input.full, .form select.full { grid-column: span 2; }
 .label {
   width: 4in;
   height: 2.5in;
@@ -37,20 +35,20 @@ body {
   align-items: center;
 }
 .barcode-container {
-  width: 100px; /* wider to accommodate diagonal */
+  width: 80px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .barcode-container svg {
-  transform: rotate(45deg); /* 45 degrees as requested */
-  width: 280px;  /* larger to fill the space diagonally */
-  height: 100px;
+  transform: rotate(-90deg);
+  width: 220px;
+  height: 70px;
 }
 .content {
   flex: 1;
-  padding-left: 0.2in;
+  padding-left: 0.15in;
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
@@ -89,6 +87,11 @@ body {
 .sku {
   font-size: 15px;
   font-weight: 700;
+  margin-bottom: 8px;
+}
+.madein {
+  font-size: 13px;
+  font-weight: 500;
 }
 /* PRINT SETTINGS */
 @media print {
@@ -108,6 +111,19 @@ body {
   <input id="cm" placeholder="CM (28)" value="28">
   <input id="color" placeholder="Colorway (BLACK/RED/WHITE)" value="BLACK/RED/WHITE" class="full">
   <input id="sku" placeholder="Style Code (DZ5485-612)" value="DZ5485-612" class="full">
+  
+  <select id="madein" class="full">
+    <option value="MADE IN VIETNAM">MADE IN VIETNAM</option>
+    <option value="MADE IN CHINA">MADE IN CHINA</option>
+    <option value="MADE IN INDONESIA">MADE IN INDONESIA</option>
+    <option value="MADE IN INDIA">MADE IN INDIA</option>
+    <option value="MADE IN THAILAND">MADE IN THAILAND</option>
+    <option value="MADE IN KOREA">MADE IN KOREA</option>
+    <option value="MADE IN TAIWAN">MADE IN TAIWAN</option>
+    <option value="MADE IN PHILIPPINES">MADE IN PHILIPPINES</option>
+    <option value="MADE IN MALAYSIA">MADE IN MALAYSIA</option>
+    <option value="MADE IN BRAZIL">MADE IN BRAZIL</option>
+  </select>
 </div>
 
 <div class="label">
@@ -140,6 +156,7 @@ body {
     </div>
     <div class="colorway" id="l-color"></div>
     <div class="sku" id="l-sku"></div>
+    <div class="madein" id="l-madein"></div>
   </div>
 </div>
 
@@ -152,10 +169,11 @@ const inputs = {
   eu: document.getElementById("eu"),
   cm: document.getElementById("cm"),
   color: document.getElementById("color"),
-  sku: document.getElementById("sku")
+  sku: document.getElementById("sku"),
+  madein: document.getElementById("madein")
 };
 
-document.querySelectorAll("input").forEach(input => input.addEventListener("input", updateLabel));
+document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("input", updateLabel));
 
 function updateLabel() {
   document.getElementById("l-model").innerText = inputs.model.value.toUpperCase();
@@ -166,11 +184,12 @@ function updateLabel() {
   document.getElementById("l-cm").innerText = inputs.cm.value || '-';
   document.getElementById("l-color").innerText = inputs.color.value.toUpperCase();
   document.getElementById("l-sku").innerText = inputs.sku.value.toUpperCase();
+  document.getElementById("l-madein").innerText = inputs.madein.value; // already uppercase in options
 
   JsBarcode("#barcode", inputs.sku.value || "000000000", {
     format: "CODE128",
-    width: 2.4,
-    height: 280,  /* longer to look good when rotated 45 degrees */
+    width: 2.2,
+    height: 220,
     displayValue: false,
     margin: 0,
     flat: true
