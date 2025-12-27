@@ -43,16 +43,16 @@ body {
 .model {
   font-size: 15.2px;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   line-height: 1.2;
   text-align: left;
 }
 .sizes {
-  font-size: 12px;
-  margin-bottom: 14.4px;
+  margin-bottom: 8px;
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+  align-items: flex-end; /* align bottoms so larger US M stands out */
 }
 .size-group {
   text-align: center;
@@ -67,6 +67,11 @@ body {
 .size-value {
   font-size: 12px;
   font-weight: 700;
+}
+/* Make US M (Men's) size 3× larger */
+#l-mens {
+  font-size: 36px !important; /* 12px × 3 */
+  line-height: 1;
 }
 .colorway {
   font-size: 12px;
@@ -199,10 +204,9 @@ function updateLabel() {
     return;
   }
 
-  // Clear previous barcode
   barcodeSvg.innerHTML = "";
 
-  let format = "CODE128"; // safe fallback
+  let format = "CODE128";
   if (upcValue.length === 12 && /^\d+$/.test(upcValue)) {
     format = "UPC";
   } else if (upcValue.length === 13 && /^\d+$/.test(upcValue)) {
@@ -219,7 +223,6 @@ function updateLabel() {
   });
 }
 
-// Initial generation
 updateLabel();
 </script>
 </body>
