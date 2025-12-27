@@ -44,7 +44,7 @@ body {
   justify-content: center;
 }
 .barcode-container svg {
-  transform: rotate(90deg);
+  transform: rotate(45deg);
   width: 200px;
   height: 60px;
 }
@@ -98,7 +98,6 @@ body {
 </head>
 <body>
 <div class="form">
-  <input id="brand" placeholder="Brand (NIKE)" value="NIKE" class="full">
   <input id="model" placeholder="Model (AIR JORDAN 1 RETRO HIGH OG)" class="full">
   <input id="mens" placeholder="US Men's (10)" value="10">
   <input id="womens" placeholder="US Women's (11.5)" value="11.5">
@@ -114,7 +113,6 @@ body {
     <svg id="barcode"></svg>
   </div>
   <div class="content">
-    <div class="brand" id="l-brand">NIKE</div>
     <div class="model" id="l-model"></div>
     <div class="sizes" id="l-sizes">
       <div class="size-group">
@@ -145,7 +143,6 @@ body {
 
 <script>
 const inputs = {
-  brand: document.getElementById("brand"),
   model: document.getElementById("model"),
   mens: document.getElementById("mens"),
   womens: document.getElementById("womens"),
@@ -159,7 +156,6 @@ const inputs = {
 document.querySelectorAll("input").forEach(input => input.addEventListener("input", updateLabel));
 
 function updateLabel() {
-  document.getElementById("l-brand").innerText = inputs.brand.value.toUpperCase();
   document.getElementById("l-model").innerText = inputs.model.value.toUpperCase();
   document.getElementById("l-mens").innerText = inputs.mens.value || '-';
   document.getElementById("l-womens").innerText = inputs.womens.value || '-';
