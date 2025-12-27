@@ -25,7 +25,7 @@ body {
 }
 .form input.full, .form select.full { grid-column: span 2; }
 .label {
-  width: 4in;
+  width: 4.3in; /* increased by ~0.3in (about 2 "clicks" wider) */
   height: 2.5in;
   background: #fff;
   border: 1px solid #000;
@@ -112,7 +112,7 @@ body {
 }
 .barcode-container svg {
   width: 75%;
-  height: 35px;
+  height: 30px; /* reduced from 35px for shorter barcode */
 }
 /* PRINT SETTINGS */
 @media print {
@@ -134,7 +134,7 @@ body {
   <input id="color" placeholder="Colorway (BLACK/RED/WHITE)" value="BLACK/RED/WHITE" class="full">
   <input id="sku" placeholder="Style Code (DZ5485-612)" value="DZ5485-612" class="full">
   <input id="upc" placeholder="UPC / Barcode Number (e.g. 196608123456)" class="full" value="196608123456">
-  
+ 
   <select id="madein" class="full">
     <option value="MADE IN VIETNAM">MADE IN VIETNAM</option>
     <option value="MADE IN CHINA">MADE IN CHINA</option>
@@ -148,7 +148,6 @@ body {
     <option value="MADE IN BRAZIL">MADE IN BRAZIL</option>
   </select>
 </div>
-
 <div class="label">
   <div class="content">
     <div class="model" id="l-model"></div>
@@ -184,12 +183,11 @@ body {
       <div class="madein" id="l-madein"></div>
     </div>
   </div>
-  
+ 
   <div class="barcode-container">
     <svg id="barcode"></svg>
   </div>
 </div>
-
 <script>
 const inputs = {
   model: document.getElementById("model"),
@@ -204,9 +202,7 @@ const inputs = {
   upc: document.getElementById("upc"),
   madein: document.getElementById("madein")
 };
-
 const womensGroup = document.getElementById("womens-group");
-
 // Extended Nike/Jordan men's size conversion map – up to US 18
 const sizeMap = {
   "3.5": { uk: "3", eu: "35.5", cm: "21.6", womens: "5", br: "33" },
@@ -235,33 +231,26 @@ const sizeMap = {
   "17": { uk: "16", eu: "51.5", cm: "35", womens: "", br: "49" },
   "18": { uk: "17", eu: "52.5", cm: "36", womens: "", br: "50" }
 };
-
 document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("change", updateLabel));
 document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("keyup", updateLabel));
-
 function updateLabel() {
   const usMensStr = inputs.mens.value.trim();
   const usMens = parseFloat(usMensStr);
-
   document.getElementById("l-model").innerText = inputs.model.value.toUpperCase();
   document.getElementById("l-mens").innerText = usMensStr || '-';
   document.getElementById("l-color").innerText = inputs.color.value.toUpperCase();
   document.getElementById("l-sku").innerText = inputs.sku.value.toUpperCase();
   document.getElementById("l-madein").innerText = inputs.madein.value;
-
   if (usMensStr && sizeMap[usMensStr]) {
     const conv = sizeMap[usMensStr];
     inputs.uk.value = conv.uk;
     inputs.eu.value = conv.eu;
     inputs.cm.value = conv.cm;
     inputs.br.value = conv.br;
-
     document.getElementById("l-uk").innerText = conv.uk;
     document.getElementById("l-eu").innerText = conv.eu;
     document.getElementById("l-cm").innerText = conv.cm;
     document.getElementById("l-br").innerText = conv.br;
-
-    // Handle Women's size: hide if US M >= 14 or no womens value
     if (usMens >= 14 || !conv.womens) {
       womensGroup.style.display = "none";
       inputs.womens.value = "";
@@ -271,12 +260,10 @@ function updateLabel() {
       document.getElementById("l-womens").innerText = conv.womens;
     }
   } else {
-    // Manual mode
     document.getElementById("l-uk").innerText = inputs.uk.value || '-';
     document.getElementById("l-eu").innerText = inputs.eu.value || '-';
     document.getElementById("l-cm").innerText = inputs.cm.value || '-';
     document.getElementById("l-br").innerText = inputs.br.value || '-';
-
     if (usMens >= 14) {
       womensGroup.style.display = "none";
       inputs.womens.value = "";
@@ -285,34 +272,28 @@ function updateLabel() {
       document.getElementById("l-womens").innerText = inputs.womens.value || '-';
     }
   }
-
   const upcValue = inputs.upc.value.trim();
   const barcodeSvg = document.getElementById("barcode");
-
   if (upcValue === "") {
     barcodeSvg.innerHTML = "";
     return;
   }
-
   barcodeSvg.innerHTML = "";
-
   let format = "CODE128";
   if (upcValue.length === 12 && /^\d+$/.test(upcValue)) {
     format = "UPC";
   } else if (upcValue.length === 13 && /^\d+$/.test(upcValue)) {
     format = "EAN13";
   }
-
   JsBarcode("#barcode", upcValue, {
     format: format,
     width: 2,
-    height: 50,
+    height: 40, /* reduced from 50px for shorter barcode */
     displayValue: false,
     margin: 0,
     flat: true
   });
 }
-
 updateLabel();
 </script>
 </body>
