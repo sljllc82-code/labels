@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <title>Authentic Nike Shoe Label Generator</title>
-<!-- Fonts: Helvetica Neue for authenticity (common on real labels), fallback to Arial/sans-serif -->
-<link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<!-- Fonts: Helvetica Neue for authenticity -->
+<link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <!-- Barcode library -->
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <style>
@@ -37,33 +37,34 @@ body {
   align-items: center;
 }
 .barcode-container {
-  width: 70px;
+  width: 80px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .barcode-container svg {
-  transform: rotate(45deg);
-  width: 200px;
-  height: 60px;
+  transform: rotate(-90deg);
+  width: 220px; /* longer when rotated for taller bars */
+  height: 70px;
 }
 .content {
   flex: 1;
-  padding-left: 0.2in;
+  padding-left: 0.15in;
   text-transform: uppercase;
-  font-weight: bold;
   letter-spacing: 0.8px;
+  font-weight: 700;
 }
 .brand {
   font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 6px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  line-height: 1;
 }
 .model {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 18px;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 16px;
   line-height: 1.2;
 }
 .sizes {
@@ -71,22 +72,26 @@ body {
   margin-bottom: 12px;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 18px;
 }
 .size-group {
-  min-width: 120px;
+  text-align: center;
 }
 .size-label {
-  font-size: 11px;
-  color: #555;
-  margin-bottom: 2px;
+  font-size: 10px;
+  font-weight: 300;
+  color: #444;
+  margin-bottom: 3px;
+  letter-spacing: 1px;
 }
 .size-value {
   font-size: 15px;
+  font-weight: 700;
 }
 .details {
   font-size: 14px;
   line-height: 1.5;
+  font-weight: 700;
 }
 /* PRINT SETTINGS */
 @media print {
@@ -98,6 +103,7 @@ body {
 </head>
 <body>
 <div class="form">
+  <input id="brand" placeholder="Brand (NIKE)" value="NIKE" class="full">
   <input id="model" placeholder="Model (AIR JORDAN 1 RETRO HIGH OG)" class="full">
   <input id="mens" placeholder="US Men's (10)" value="10">
   <input id="womens" placeholder="US Women's (11.5)" value="11.5">
@@ -113,6 +119,7 @@ body {
     <svg id="barcode"></svg>
   </div>
   <div class="content">
+    <div class="brand" id="l-brand">NIKE</div>
     <div class="model" id="l-model"></div>
     <div class="sizes" id="l-sizes">
       <div class="size-group">
@@ -143,6 +150,7 @@ body {
 
 <script>
 const inputs = {
+  brand: document.getElementById("brand"),
   model: document.getElementById("model"),
   mens: document.getElementById("mens"),
   womens: document.getElementById("womens"),
@@ -156,6 +164,7 @@ const inputs = {
 document.querySelectorAll("input").forEach(input => input.addEventListener("input", updateLabel));
 
 function updateLabel() {
+  document.getElementById("l-brand").innerText = inputs.brand.value.toUpperCase();
   document.getElementById("l-model").innerText = inputs.model.value.toUpperCase();
   document.getElementById("l-mens").innerText = inputs.mens.value || '-';
   document.getElementById("l-womens").innerText = inputs.womens.value || '-';
@@ -167,10 +176,11 @@ function updateLabel() {
 
   JsBarcode("#barcode", inputs.sku.value || "000000000", {
     format: "CODE128",
-    width: 2,
-    height: 200,
+    width: 2.2,   /* thicker bars for more authentic look */
+    height: 220,  /* taller barcode */
     displayValue: false,
-    margin: 0
+    margin: 0,
+    flat: true    /* removes human-readable text below if any */
   });
 }
 
