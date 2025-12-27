@@ -44,8 +44,8 @@ body {
   justify-content: center;
 }
 .barcode-container svg {
-  transform: rotate(-90deg);
-  width: 220px; /* longer when rotated for taller bars */
+  transform: rotate(90deg); /* Changed to +90deg */
+  width: 220px;
   height: 70px;
 }
 .content {
@@ -53,26 +53,19 @@ body {
   padding-left: 0.15in;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  font-weight: 700;
-}
-.brand {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 4px;
-  line-height: 1;
 }
 .model {
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   line-height: 1.2;
 }
 .sizes {
   font-size: 15px;
-  margin-bottom: 12px;
+  margin-bottom: 18px;
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 20px;
 }
 .size-group {
   text-align: center;
@@ -88,9 +81,13 @@ body {
   font-size: 15px;
   font-weight: 700;
 }
-.details {
-  font-size: 14px;
-  line-height: 1.5;
+.colorway {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.sku {
+  font-size: 15px;
   font-weight: 700;
 }
 /* PRINT SETTINGS */
@@ -103,8 +100,7 @@ body {
 </head>
 <body>
 <div class="form">
-  <input id="brand" placeholder="Brand (NIKE)" value="NIKE" class="full">
-  <input id="model" placeholder="Model (AIR JORDAN 1 RETRO HIGH OG)" class="full">
+  <input id="model" placeholder="Model (AIR JORDAN 1 RETRO HIGH OG)" class="full" value="AIR JORDAN 1 RETRO HIGH OG">
   <input id="mens" placeholder="US Men's (10)" value="10">
   <input id="womens" placeholder="US Women's (11.5)" value="11.5">
   <input id="uk" placeholder="UK (9)" value="9">
@@ -119,9 +115,8 @@ body {
     <svg id="barcode"></svg>
   </div>
   <div class="content">
-    <div class="brand" id="l-brand">NIKE</div>
     <div class="model" id="l-model"></div>
-    <div class="sizes" id="l-sizes">
+    <div class="sizes">
       <div class="size-group">
         <div class="size-label">US M</div>
         <div class="size-value" id="l-mens">10</div>
@@ -143,14 +138,13 @@ body {
         <div class="size-value" id="l-cm">28</div>
       </div>
     </div>
-    <div class="details">COLOR <span id="l-color"></span></div>
-    <div class="details">STYLE <span id="l-sku"></span></div>
+    <div class="colorway" id="l-color"></div>
+    <div class="sku" id="l-sku"></div>
   </div>
 </div>
 
 <script>
 const inputs = {
-  brand: document.getElementById("brand"),
   model: document.getElementById("model"),
   mens: document.getElementById("mens"),
   womens: document.getElementById("womens"),
@@ -164,7 +158,6 @@ const inputs = {
 document.querySelectorAll("input").forEach(input => input.addEventListener("input", updateLabel));
 
 function updateLabel() {
-  document.getElementById("l-brand").innerText = inputs.brand.value.toUpperCase();
   document.getElementById("l-model").innerText = inputs.model.value.toUpperCase();
   document.getElementById("l-mens").innerText = inputs.mens.value || '-';
   document.getElementById("l-womens").innerText = inputs.womens.value || '-';
@@ -176,11 +169,11 @@ function updateLabel() {
 
   JsBarcode("#barcode", inputs.sku.value || "000000000", {
     format: "CODE128",
-    width: 2.2,   /* thicker bars for more authentic look */
-    height: 220,  /* taller barcode */
+    width: 2.2,
+    height: 220,
     displayValue: false,
     margin: 0,
-    flat: true    /* removes human-readable text below if any */
+    flat: true
   });
 }
 
