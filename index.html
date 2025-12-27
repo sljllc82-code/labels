@@ -2,32 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Shoe Label Generator</title>
+<title>Nike-Style Shoe Label</title>
 
-<!-- Fonts (Nike-style substitutes) -->
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
-<!-- Barcode library -->
+<!-- Barcode -->
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 
 <style>
 body {
   font-family: Inter, sans-serif;
-  background: #f4f4f4;
+  background: #eee;
   padding: 20px;
 }
 
 /* FORM */
 .form {
-  max-width: 400px;
-  margin-bottom: 20px;
+  max-width: 380px;
+  margin-bottom: 16px;
 }
 
 .form input {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 8px;
-  font-size: 14px;
+  padding: 6px;
+  margin-bottom: 6px;
+  font-size: 13px;
 }
 
 /* LABEL */
@@ -35,53 +35,59 @@ body {
   width: 4in;
   height: 2.5in;
   background: #fff;
-  color: #000;
-  padding: 0.2in;
-  box-sizing: border-box;
   border: 1px solid #000;
+  display: flex;
+  box-sizing: border-box;
 }
 
-.brand {
+/* VERTICAL BRAND */
+.brand-vertical {
+  width: 0.45in;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.brand-vertical span {
+  transform: rotate(-90deg);
   font-family: Montserrat, sans-serif;
   font-weight: 600;
-  font-size: 14px;
-  margin-bottom: 2px;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  padding: 0.18in;
+  box-sizing: border-box;
 }
 
 .model {
   font-family: Montserrat, sans-serif;
-  font-size: 13px;
-  margin-bottom: 6px;
-}
-
-.sizes {
   font-size: 12px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
-.details {
+.size-row {
   font-size: 11px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
-.barcode {
-  margin-top: 4px;
+.detail {
+  font-size: 10.5px;
+  margin-bottom: 2px;
 }
 
-/* PRINT SETTINGS */
+svg {
+  margin-top: 2px;
+}
+
+/* PRINT */
 @media print {
-  body {
-    background: none;
-    padding: 0;
-  }
-
-  .form {
-    display: none;
-  }
-
-  .label {
-    border: none;
-  }
+  body { background: none; padding: 0; }
+  .form { display: none; }
+  .label { border: none; }
 }
 </style>
 </head>
@@ -89,60 +95,65 @@ body {
 <body>
 
 <div class="form">
-  <input id="brand" placeholder="Brand (NIKE)" value="NIKE">
-  <input id="model" placeholder="Model (AIR JORDAN 1 RETRO HIGH OG)">
-  <input id="mens" placeholder="Men's Size (10)">
-  <input id="womens" placeholder="Women's Size (11.5)">
-  <input id="uk" placeholder="UK Size (9)">
-  <input id="eu" placeholder="EU Size (44)">
-  <input id="cm" placeholder="CM (28)">
-  <input id="color" placeholder="Colorway (BLACK / RED)">
-  <input id="sku" placeholder="Style Code / SKU (DZ5485-612)">
+  <input id="brand" value="NIKE">
+  <input id="model" placeholder="AIR JORDAN 1 RETRO HIGH OG">
+  <input id="us" placeholder="US MEN SIZE (10)">
+  <input id="color" placeholder="COLOR (BLACK / RED)">
+  <input id="sku" placeholder="STYLE CODE (DZ5485-612)">
 </div>
 
 <div class="label">
-  <div class="brand" id="l-brand">NIKE</div>
-  <div class="model" id="l-model"></div>
+  <div class="brand-vertical">
+    <span id="l-brand">NIKE</span>
+  </div>
 
-  <div class="sizes" id="l-sizes"></div>
+  <div class="content">
+    <div class="model" id="l-model"></div>
 
-  <div class="details" id="l-color"></div>
-  <div class="details" id="l-sku"></div>
+    <div class="size-row" id="l-sizes"></div>
 
-  <svg id="barcode"></svg>
+    <div class="detail" id="l-color"></div>
+    <div class="detail" id="l-sku"></div>
+
+    <svg id="barcode"></svg>
+  </div>
 </div>
 
 <script>
-const inputs = document.querySelectorAll("input");
-
-inputs.forEach(input => {
-  input.addEventListener("input", updateLabel);
-});
+document.querySelectorAll("input").forEach(i =>
+  i.addEventListener("input", updateLabel)
+);
 
 function updateLabel() {
-  document.getElementById("l-brand").innerText =
-    document.getElementById("brand").value;
+  const us = parseFloat(usInput.value);
 
-  document.getElementById("l-model").innerText =
-    document.getElementById("model").value;
+  let wmns = "", uk = "", eu = "", cm = "";
 
-  document.getElementById("l-sizes").innerText =
-    `MENS ${mens.value}  |  WMNS ${womens.value}  |  UK ${uk.value}  |  EUR ${eu.value}  |  CM ${cm.value}`;
+  if (!isNaN(us)) {
+    wmns = (us + 1.5).toFixed(1);
+    uk = (us - 0.5).toFixed(1);
+    eu = us + 33;
+    cm = us * 3;
+  }
 
-  document.getElementById("l-color").innerText =
-    `COLOR: ${color.value}`;
+  l-brand.innerText = brand.value.toUpperCase();
+  l-model.innerText = model.value.toUpperCase();
 
-  document.getElementById("l-sku").innerText =
-    `STYLE: ${sku.value}`;
+  l-sizes.innerText =
+    `MENS ${us || ""}  |  WMNS ${wmns}  |  UK ${uk}  |  EUR ${eu}  |  CM ${cm}`;
+
+  l-color.innerText = `COLOR: ${color.value.toUpperCase()}`;
+  l-sku.innerText = `STYLE: ${sku.value.toUpperCase()}`;
 
   JsBarcode("#barcode", sku.value || "000000", {
     format: "CODE128",
-    width: 1.3,
-    height: 40,
+    width: 1.1,
+    height: 36,
     displayValue: false
   });
 }
 
+const usInput = document.getElementById("us");
 updateLabel();
 </script>
 
