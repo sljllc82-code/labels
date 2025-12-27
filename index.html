@@ -3,161 +3,150 @@
 <head>
 <meta charset="UTF-8" />
 <title>Shoe Label Generator</title>
-
 <!-- Fonts (Nike-style substitutes) -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <!-- Barcode library -->
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-
 <style>
 body {
   font-family: Inter, sans-serif;
   background: #f4f4f4;
   padding: 20px;
 }
-
-/* FORM */
 .form {
   max-width: 400px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
-
 .form input {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 8px;
-  font-size: 14px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
 }
-
-/* LABEL */
 .label {
   width: 4in;
   height: 2.5in;
   background: #fff;
-  color: #000;
-  padding: 0.2in;
-  box-sizing: border-box;
   border: 1px solid #000;
-
+  box-sizing: border-box;
   display: flex;
   align-items: center;
+  padding: 0.2in;
 }
-
-/* Barcode */
-.barcode {
-  margin-right: 10px;
-  transform: rotate(-90deg); /* Rotate barcode vertically */
-  transform-origin: top left;
-}
-
-/* Text content next to barcode */
-.label-content {
+.barcode-container {
+  width: 60px;
+  height: 100%;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.2in;
 }
-
-/* Text styling */
+.barcode-container svg {
+  transform: rotate(-90deg);
+  width: 180px; /* taller when rotated */
+  height: 50px;
+}
+.content {
+  flex: 1;
+  text-transform: uppercase;
+}
 .brand {
   font-family: Montserrat, sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  margin-bottom: 2px;
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 4px;
 }
-
 .model {
   font-family: Montserrat, sans-serif;
-  font-size: 13px;
-  margin-bottom: 6px;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 12px;
 }
-
 .sizes {
-  font-size: 12px;
-  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
 }
-
 .details {
-  font-size: 11px;
-  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
 }
-
 /* PRINT SETTINGS */
 @media print {
   body {
     background: none;
     padding: 0;
   }
-
   .form {
     display: none;
   }
-
   .label {
     border: none;
   }
 }
 </style>
 </head>
-
 <body>
-
 <div class="form">
   <input id="brand" placeholder="Brand (NIKE)" value="NIKE">
   <input id="model" placeholder="Model (AIR JORDAN 1 RETRO HIGH OG)">
-  <input id="mens" placeholder="Men's Size (10)">
-  <input id="womens" placeholder="Women's Size (11.5)">
-  <input id="uk" placeholder="UK Size (9)">
-  <input id="eu" placeholder="EU Size (44)">
-  <input id="cm" placeholder="CM (28)">
-  <input id="color" placeholder="Colorway (BLACK / RED)">
-  <input id="sku" placeholder="Style Code / SKU (DZ5485-612)">
+  <input id="mens" placeholder="Men's Size (10)" value="10">
+  <input id="womens" placeholder="Women's Size (11.5)" value="11.5">
+  <input id="uk" placeholder="UK Size (9)" value="9">
+  <input id="eu" placeholder="EU Size (44)" value="44">
+  <input id="cm" placeholder="CM (28)" value="28">
+  <input id="color" placeholder="Colorway (BLACK / RED)" value="BLACK / RED">
+  <input id="sku" placeholder="Style Code / SKU (DZ5485-612)" value="DZ5485-612">
 </div>
 
 <div class="label">
-  <svg id="barcode" class="barcode"></svg>
-
-  <div class="label-content">
+  <div class="barcode-container">
+    <svg id="barcode"></svg>
+  </div>
+  <div class="content">
     <div class="brand" id="l-brand">NIKE</div>
     <div class="model" id="l-model"></div>
     <div class="sizes" id="l-sizes"></div>
-    <div class="details" id="l-color"></div>
-    <div class="details" id="l-sku"></div>
+    <div class="details">COLOR <span id="l-color"></span></div>
+    <div class="details">STYLE <span id="l-sku"></span></div>
   </div>
 </div>
 
 <script>
-const inputs = document.querySelectorAll("input");
+const brand = document.getElementById("brand");
+const model = document.getElementById("model");
+const mens = document.getElementById("mens");
+const womens = document.getElementById("womens");
+const uk = document.getElementById("uk");
+const eu = document.getElementById("eu");
+const cm = document.getElementById("cm");
+const color = document.getElementById("color");
+const sku = document.getElementById("sku");
 
-inputs.forEach(input => {
-  input.addEventListener("input", updateLabel);
-});
+const inputs = document.querySelectorAll("input");
+inputs.forEach(input => input.addEventListener("input", updateLabel));
 
 function updateLabel() {
-  document.getElementById("l-brand").innerText =
-    document.getElementById("brand").value;
+  document.getElementById("l-brand").innerText = brand.value.toUpperCase();
+  document.getElementById("l-model").innerText = model.value.toUpperCase();
+  document.getElementById("l-sizes").innerText = 
+    `US M ${mens.value || '-'}   US W ${womens.value || '-'}   UK ${uk.value || '-'}   FR ${eu.value || '-'}   CM ${cm.value || '-'}`;
+  document.getElementById("l-color").innerText = color.value.toUpperCase();
+  document.getElementById("l-sku").innerText = sku.value.toUpperCase();
 
-  document.getElementById("l-model").innerText =
-    document.getElementById("model").value;
-
-  document.getElementById("l-sizes").innerText =
-    `MENS ${mens.value}  |  WMNS ${womens.value}  |  UK ${uk.value}  |  EUR ${eu.value}  |  CM ${cm.value}`;
-
-  document.getElementById("l-color").innerText =
-    `COLOR: ${color.value}`;
-
-  document.getElementById("l-sku").innerText =
-    `STYLE: ${sku.value}`;
-
-  JsBarcode("#barcode", sku.value || "000000", {
+  JsBarcode("#barcode", sku.value || "000000000", {
     format: "CODE128",
-    width: 1.3,
-    height: 40,
-    displayValue: false
+    width: 2,
+    height: 180,
+    displayValue: false,
+    margin: 0
   });
 }
 
 updateLabel();
 </script>
-
 </body>
 </html>
