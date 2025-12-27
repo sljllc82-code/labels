@@ -30,7 +30,7 @@ body {
   background: #fff;
   border: 1px solid #000;
   box-sizing: border-box;
-  padding: 0.25in 0.35in;
+  padding: 0.25in 0.25in;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -46,12 +46,14 @@ body {
   margin-bottom: 5px;
   line-height: 1.2;
   text-align: left;
+  margin-left: 0;
 }
 .colorway {
-  font-size: 12px;       /* reduced to 12px as requested */
+  font-size: 12px;
   font-weight: 700;
   margin-bottom: 15px;
   text-align: left;
+  margin-left: 0;
 }
 .sizes {
   margin-bottom: 10px;
@@ -59,6 +61,8 @@ body {
   flex-wrap: wrap;
   gap: 20px;
   align-items: flex-end;
+  justify-content: flex-start;
+  margin-left: 0;
 }
 .size-group {
   text-align: center;
@@ -78,6 +82,7 @@ body {
 #l-mens {
   font-size: 52px !important;
   line-height: 1;
+  margin-left: 0;
 }
 /* BR size group */
 #br-group {
@@ -89,6 +94,7 @@ body {
   gap: 25px;
   align-items: baseline;
   margin-bottom: 8px;
+  margin-left: 0;
 }
 .sku {
   font-size: 15px;
@@ -101,10 +107,11 @@ body {
 .barcode-container {
   width: 100%;
   display: flex;
-  justify-content: flex-start; /* already left-aligned, kept for clarity */
+  justify-content: flex-start;
+  margin-left: 0;
 }
 .barcode-container svg {
-  width: 70%;
+  width: 75%;
   height: 50px;
 }
 /* PRINT SETTINGS */
@@ -146,12 +153,12 @@ body {
   <div class="content">
     <div class="model" id="l-model"></div>
     <div class="colorway" id="l-color"></div>
-    <div class="sizes">
+    <div class="sizes" id="sizes-container">
       <!-- US M group: no label, just the large value -->
       <div class="size-group">
         <div class="size-value" id="l-mens">10</div>
       </div>
-      <div class="size-group">
+      <div class="size-group" id="womens-group">
         <div class="size-label">US W</div>
         <div class="size-value" id="l-womens">11.5</div>
       </div>
@@ -198,6 +205,8 @@ const inputs = {
   madein: document.getElementById("madein")
 };
 
+const womensGroup = document.getElementById("womens-group");
+
 // Extended Nike/Jordan men's size conversion map – up to US 18
 const sizeMap = {
   "3.5": { uk: "3", eu: "35.5", cm: "21.6", womens: "5", br: "33" },
@@ -220,44 +229,61 @@ const sizeMap = {
   "12": { uk: "11", eu: "46", cm: "30", womens: "13.5", br: "44" },
   "12.5": { uk: "11.5", eu: "47", cm: "30.5", womens: "14", br: "44.5" },
   "13": { uk: "12", eu: "47.5", cm: "31", womens: "14.5", br: "45" },
-  "14": { uk: "13", eu: "48.5", cm: "32", womens: "15.5", br: "46" },
-  "15": { uk: "14", eu: "49.5", cm: "33", womens: "16.5", br: "47" },
-  "16": { uk: "15", eu: "50.5", cm: "34", womens: "17.5", br: "48" },
-  "17": { uk: "16", eu: "51.5", cm: "35", womens: "18.5", br: "49" },
-  "18": { uk: "17", eu: "52.5", cm: "36", womens: "19.5", br: "50" }
+  "14": { uk: "13", eu: "48.5", cm: "32", womens: "", br: "46" },
+  "15": { uk: "14", eu: "49.5", cm: "33", womens: "", br: "47" },
+  "16": { uk: "15", eu: "50.5", cm: "34", womens: "", br: "48" },
+  "17": { uk: "16", eu: "51.5", cm: "35", womens: "", br: "49" },
+  "18": { uk: "17", eu: "52.5", cm: "36", womens: "", br: "50" }
 };
 
 document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("change", updateLabel));
 document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("keyup", updateLabel));
 
 function updateLabel() {
-  const usMens = inputs.mens.value.trim();
+  const usMensStr = inputs.mens.value.trim();
+  const usMens = parseFloat(usMensStr);
 
   document.getElementById("l-model").innerText = inputs.model.value.toUpperCase();
-  document.getElementById("l-mens").innerText = usMens || '-';
+  document.getElementById("l-mens").innerText = usMensStr || '-';
   document.getElementById("l-color").innerText = inputs.color.value.toUpperCase();
   document.getElementById("l-sku").innerText = inputs.sku.value.toUpperCase();
   document.getElementById("l-madein").innerText = inputs.madein.value;
 
-  if (usMens && sizeMap[usMens]) {
-    const conv = sizeMap[usMens];
-    inputs.womens.value = conv.womens;
+  if (usMensStr && sizeMap[usMensStr]) {
+    const conv = sizeMap[usMensStr];
     inputs.uk.value = conv.uk;
     inputs.eu.value = conv.eu;
     inputs.cm.value = conv.cm;
     inputs.br.value = conv.br;
 
-    document.getElementById("l-womens").innerText = conv.womens || '-';
     document.getElementById("l-uk").innerText = conv.uk;
     document.getElementById("l-eu").innerText = conv.eu;
     document.getElementById("l-cm").innerText = conv.cm;
     document.getElementById("l-br").innerText = conv.br;
+
+    // Handle Women's size: hide if US M >= 14 or no womens value
+    if (usMens >= 14 || !conv.womens) {
+      womensGroup.style.display = "none";
+      inputs.womens.value = "";
+    } else {
+      womensGroup.style.display = "";
+      inputs.womens.value = conv.womens;
+      document.getElementById("l-womens").innerText = conv.womens;
+    }
   } else {
-    document.getElementById("l-womens").innerText = inputs.womens.value || '-';
+    // Manual mode
     document.getElementById("l-uk").innerText = inputs.uk.value || '-';
     document.getElementById("l-eu").innerText = inputs.eu.value || '-';
     document.getElementById("l-cm").innerText = inputs.cm.value || '-';
     document.getElementById("l-br").innerText = inputs.br.value || '-';
+
+    if (usMens >= 14) {
+      womensGroup.style.display = "none";
+      inputs.womens.value = "";
+    } else {
+      womensGroup.style.display = "";
+      document.getElementById("l-womens").innerText = inputs.womens.value || '-';
+    }
   }
 
   const upcValue = inputs.upc.value.trim();
