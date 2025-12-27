@@ -92,8 +92,8 @@ body {
   margin-bottom: 8px;
 }
 .sku {
-  font-size: 13px;   /* changed to match Made In */
-  font-weight: 500;  /* changed to match Made In */
+  font-size: 15px;
+  font-weight: 700;
 }
 .madein {
   font-size: 13px;
@@ -106,9 +106,10 @@ body {
   align-items: flex-start;
 }
 .barcode-container svg {
-  width: 80%;
+  width: 80%; /* increased to push it further left while staying safe */
+  max-width: none;
   height: 50px;
-  margin-left: 0;
+  margin-left: 0; /* explicit left alignment */
 }
 /* PRINT SETTINGS */
 @media print {
