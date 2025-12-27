@@ -33,18 +33,21 @@ body {
   padding: 0.25in;
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow: visible; /* prevent clipping */
 }
 .barcode-container {
   width: 0.7in;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-right: 0.15in;
+  overflow: visible; /* allow rotated SVG to show fully */
 }
 .barcode-container svg {
   transform: rotate(-90deg);
-  width: 260px !important;
-  height: 80px !important;
 }
 .content {
   flex: 1;
@@ -70,7 +73,6 @@ body {
   flex-wrap: wrap;
   gap: 20px;
   align-items: flex-end;
-  justify-content: flex-start;
 }
 .size-group {
   text-align: center;
@@ -289,7 +291,7 @@ function updateLabel() {
   JsBarcode("#barcode", upcValue, {
     format: format,
     width: 3,
-    height: 260,
+    height: 280,  // even taller for reliable vertical display
     displayValue: false,
     margin: 10,
     flat: true
