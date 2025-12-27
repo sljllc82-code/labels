@@ -49,7 +49,7 @@ body {
 }
 .colorway {
   font-size: 12px;
-  font-weight: 300; /* thinner */
+  font-weight: 300;
   margin-bottom: 12px;
   text-align: left;
 }
@@ -81,7 +81,7 @@ body {
 }
 /* BR size group */
 #br-group {
-  margin-top: 8px; /* gives a little separation from main sizes */
+  margin-top: 8px;
 }
 .sku-madein {
   display: flex;
@@ -118,11 +118,11 @@ body {
 <div class="form">
   <input id="model" placeholder="Model (AIR JORDAN 1 RETRO HIGH OG)" class="full" value="AIR JORDAN 1 RETRO HIGH OG">
   <input id="mens" placeholder="US Men's (10)" value="10">
-  <input id="womens" placeholder="US Women's (11.5)" value="11.5">
-  <input id="uk" placeholder="UK (9)" value="9">
-  <input id="eu" placeholder="FR/EUR (44)" value="44">
-  <input id="cm" placeholder="CM (28)" value="28">
-  <input id="br" placeholder="BR Size (42)" value="42">
+  <input id="womens" placeholder="US Women's (11.5)">
+  <input id="uk" placeholder="UK (9)">
+  <input id="eu" placeholder="FR/EUR (44)">
+  <input id="cm" placeholder="CM (28)">
+  <input id="br" placeholder="BR Size (42)">
   <input id="color" placeholder="Colorway (BLACK/RED/WHITE)" value="BLACK/RED/WHITE" class="full">
   <input id="sku" placeholder="Style Code (DZ5485-612)" value="DZ5485-612" class="full">
   <input id="upc" placeholder="UPC / Barcode Number (e.g. 196608123456)" class="full" value="196608123456">
@@ -197,20 +197,65 @@ const inputs = {
   madein: document.getElementById("madein")
 };
 
+// Nike/Jordan men's size conversion map (US M as key)
+const sizeMap = {
+  "3.5": { uk: "3", eu: "35.5", cm: "21.6", womens: "5", br: "33" },
+  "4": { uk: "3.5", eu: "36", cm: "22", womens: "5.5", br: "34" },
+  "4.5": { uk: "4", eu: "36.5", cm: "22.5", womens: "6", br: "34.5" },
+  "5": { uk: "4.5", eu: "37.5", cm: "23", womens: "6.5", br: "35" },
+  "5.5": { uk: "5", eu: "38", cm: "23.5", womens: "7", br: "35.5" },
+  "6": { uk: "5.5", eu: "38.5", cm: "24", womens: "7.5", br: "36" },
+  "6.5": { uk: "6", eu: "39", cm: "24.5", womens: "8", br: "37" },
+  "7": { uk: "6", eu: "40", cm: "25", womens: "8.5", br: "38" },
+  "7.5": { uk: "6.5", eu: "40.5", cm: "25.5", womens: "9", br: "38.5" },
+  "8": { uk: "7", eu: "41", cm: "26", womens: "9.5", br: "39" },
+  "8.5": { uk: "7.5", eu: "42", cm: "26.5", womens: "10", br: "40" },
+  "9": { uk: "8", eu: "42.5", cm: "27", womens: "10.5", br: "40.5" },
+  "9.5": { uk: "8.5", eu: "43", cm: "27.5", womens: "11", br: "41" },
+  "10": { uk: "9", eu: "44", cm: "28", womens: "11.5", br: "42" },
+  "10.5": { uk: "9.5", eu: "44.5", cm: "28.5", womens: "12", br: "42.5" },
+  "11": { uk: "10", eu: "45", cm: "29", womens: "12.5", br: "43" },
+  "11.5": { uk: "10.5", eu: "45.5", cm: "29.5", womens: "13", br: "43.5" },
+  "12": { uk: "11", eu: "46", cm: "30", womens: "13.5", br: "44" },
+  "12.5": { uk: "11.5", eu: "47", cm: "30.5", womens: "14", br: "44.5" },
+  "13": { uk: "12", eu: "47.5", cm: "31", womens: "14.5", br: "45" },
+  // Add more if needed for larger/smaller sizes
+};
+
 document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("change", updateLabel));
 document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("keyup", updateLabel));
 
 function updateLabel() {
+  const usMens = inputs.mens.value.trim();
+
   document.getElementById("l-model").innerText = inputs.model.value.toUpperCase();
-  document.getElementById("l-mens").innerText = inputs.mens.value || '-';
-  document.getElementById("l-womens").innerText = inputs.womens.value || '-';
-  document.getElementById("l-uk").innerText = inputs.uk.value || '-';
-  document.getElementById("l-eu").innerText = inputs.eu.value || '-';
-  document.getElementById("l-cm").innerText = inputs.cm.value || '-';
-  document.getElementById("l-br").innerText = inputs.br.value || '-';
+  document.getElementById("l-mens").innerText = usMens || '-';
   document.getElementById("l-color").innerText = inputs.color.value.toUpperCase();
   document.getElementById("l-sku").innerText = inputs.sku.value.toUpperCase();
   document.getElementById("l-madein").innerText = inputs.madein.value;
+
+  // Auto-fill other sizes if US Men's is provided and matches the map
+  if (usMens && sizeMap[usMens]) {
+    const conv = sizeMap[usMens];
+    inputs.womens.value = conv.womens;
+    inputs.uk.value = conv.uk;
+    inputs.eu.value = conv.eu;
+    inputs.cm.value = conv.cm;
+    inputs.br.value = conv.br;
+
+    document.getElementById("l-womens").innerText = conv.womens;
+    document.getElementById("l-uk").innerText = conv.uk;
+    document.getElementById("l-eu").innerText = conv.eu;
+    document.getElementById("l-cm").innerText = conv.cm;
+    document.getElementById("l-br").innerText = conv.br;
+  } else {
+    // Use manual inputs if no auto-fill
+    document.getElementById("l-womens").innerText = inputs.womens.value || '-';
+    document.getElementById("l-uk").innerText = inputs.uk.value || '-';
+    document.getElementById("l-eu").innerText = inputs.eu.value || '-';
+    document.getElementById("l-cm").innerText = inputs.cm.value || '-';
+    document.getElementById("l-br").innerText = inputs.br.value || '-';
+  }
 
   const upcValue = inputs.upc.value.trim();
   const barcodeSvg = document.getElementById("barcode");
