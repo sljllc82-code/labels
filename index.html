@@ -25,7 +25,7 @@ body {
 }
 .form input.full, .form select.full { grid-column: span 2; }
 .label {
-  width: 4in;           /* back to full 100% size */
+  width: 4in;
   height: 2.5in;
   background: #fff;
   border: 1px solid #000;
@@ -41,14 +41,14 @@ body {
   letter-spacing: 0.8px;
 }
 .model {
-  font-size: 19px;       /* larger than colorway */
+  font-size: 19px;
   font-weight: 700;
   margin-bottom: 5px;
   line-height: 1.2;
   text-align: left;
 }
 .colorway {
-  font-size: 15px;       /* smaller than model */
+  font-size: 12px;       /* reduced to 12px as requested */
   font-weight: 700;
   margin-bottom: 15px;
   text-align: left;
@@ -76,7 +76,7 @@ body {
 }
 /* US Men's value – no label, larger */
 #l-mens {
-  font-size: 52px !important; /* scaled up for full size label */
+  font-size: 52px !important;
   line-height: 1;
 }
 /* BR size group */
@@ -86,7 +86,7 @@ body {
 .sku-madein {
   display: flex;
   justify-content: flex-start;
-  gap: 25px; /* controlled space */
+  gap: 25px;
   align-items: baseline;
   margin-bottom: 8px;
 }
@@ -101,7 +101,7 @@ body {
 .barcode-container {
   width: 100%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-start; /* already left-aligned, kept for clarity */
 }
 .barcode-container svg {
   width: 70%;
@@ -221,10 +221,10 @@ const sizeMap = {
   "12.5": { uk: "11.5", eu: "47", cm: "30.5", womens: "14", br: "44.5" },
   "13": { uk: "12", eu: "47.5", cm: "31", womens: "14.5", br: "45" },
   "14": { uk: "13", eu: "48.5", cm: "32", womens: "15.5", br: "46" },
-  "15": { uk: "14", eu: "49.5", cm: "33", womens: "", br: "47" },
-  "16": { uk: "15", eu: "50.5", cm: "34", womens: "", br: "48" },
-  "17": { uk: "16", eu: "51.5", cm: "35", womens: "", br: "49" },
-  "18": { uk: "17", eu: "52.5", cm: "36", womens: "", br: "50" }
+  "15": { uk: "14", eu: "49.5", cm: "33", womens: "16.5", br: "47" },
+  "16": { uk: "15", eu: "50.5", cm: "34", womens: "17.5", br: "48" },
+  "17": { uk: "16", eu: "51.5", cm: "35", womens: "18.5", br: "49" },
+  "18": { uk: "17", eu: "52.5", cm: "36", womens: "19.5", br: "50" }
 };
 
 document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("change", updateLabel));
