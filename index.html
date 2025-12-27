@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Authentic Nike Shoe Label Generator</title>
+<title>Authentic Nike Shoe Label Generator (80% Scale)</title>
 <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <style>
@@ -25,12 +25,12 @@ body {
 }
 .form input.full, .form select.full { grid-column: span 2; }
 .label {
-  width: 4in;
-  height: 2.5in;
+  width: 3.2in;          /* 4in × 0.8 = 80% */
+  height: 2in;           /* 2.5in × 0.8 = 80% */
   background: #fff;
   border: 1px solid #000;
   box-sizing: border-box;
-  padding: 0.25in 0.35in;
+  padding: 0.2in 0.28in; /* scaled down proportionally */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -41,59 +41,59 @@ body {
   letter-spacing: 0.8px;
 }
 .model {
-  font-size: 19px;
+  font-size: 15.2px;     /* 19px × 0.8 */
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   line-height: 1.2;
   text-align: left;
 }
 .sizes {
-  font-size: 15px;
-  margin-bottom: 18px;
+  font-size: 12px;       /* 15px × 0.8 */
+  margin-bottom: 14.4px;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 16px;
 }
 .size-group {
   text-align: center;
 }
 .size-label {
-  font-size: 10px;
+  font-size: 8px;        /* 10px × 0.8 */
   font-weight: 300;
   color: #444;
-  margin-bottom: 3px;
+  margin-bottom: 2.4px;
   letter-spacing: 1px;
 }
 .size-value {
-  font-size: 15px;
+  font-size: 12px;       /* 15px × 0.8 */
   font-weight: 700;
 }
 .colorway {
-  font-size: 15px;
+  font-size: 12px;       /* 15px × 0.8 */
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 6.4px;
   text-align: left;
 }
 .sku {
-  font-size: 15px;
+  font-size: 12px;       /* 15px × 0.8 */
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 6.4px;
   text-align: left;
 }
 .madein {
-  font-size: 13px;
+  font-size: 10.4px;     /* 13px × 0.8 */
   font-weight: 500;
-  margin-bottom: 12px;
+  margin-bottom: 9.6px;
   text-align: left;
 }
 .barcode-container {
   width: 100%;
   display: flex;
-  justify-content: flex-start; /* left-aligned */
+  justify-content: flex-start;
 }
 .barcode-container svg {
-  width: 70%; /* safe width - plenty of room on the right */
-  height: 50px;
+  width: 70%;
+  height: 40px;          /* 50px × 0.8 */
 }
 /* PRINT SETTINGS */
 @media print {
