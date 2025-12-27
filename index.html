@@ -46,14 +46,12 @@ body {
   margin-bottom: 5px;
   line-height: 1.2;
   text-align: left;
-  margin-left: 0;
 }
 .colorway {
   font-size: 12px;
   font-weight: 700;
   margin-bottom: 15px;
   text-align: left;
-  margin-left: 0;
 }
 .sizes {
   margin-bottom: 10px;
@@ -62,7 +60,6 @@ body {
   gap: 20px;
   align-items: flex-end;
   justify-content: flex-start;
-  margin-left: 0;
 }
 .size-group {
   text-align: center;
@@ -82,7 +79,6 @@ body {
 #l-mens {
   font-size: 52px !important;
   line-height: 1;
-  margin-left: 0;
 }
 /* BR size group */
 #br-group {
@@ -94,7 +90,6 @@ body {
   gap: 25px;
   align-items: baseline;
   margin-bottom: 8px;
-  margin-left: 0;
 }
 .sku {
   font-size: 15px;
@@ -108,11 +103,13 @@ body {
   width: 100%;
   display: flex;
   justify-content: flex-start;
-  margin-left: 0;
+  align-items: flex-start;
 }
 .barcode-container svg {
-  width: 75%;
+  width: 80%; /* increased to push it further left while staying safe */
+  max-width: none;
   height: 50px;
+  margin-left: 0; /* explicit left alignment */
 }
 /* PRINT SETTINGS */
 @media print {
@@ -261,7 +258,6 @@ function updateLabel() {
     document.getElementById("l-cm").innerText = conv.cm;
     document.getElementById("l-br").innerText = conv.br;
 
-    // Handle Women's size: hide if US M >= 14 or no womens value
     if (usMens >= 14 || !conv.womens) {
       womensGroup.style.display = "none";
       inputs.womens.value = "";
@@ -271,7 +267,6 @@ function updateLabel() {
       document.getElementById("l-womens").innerText = conv.womens;
     }
   } else {
-    // Manual mode
     document.getElementById("l-uk").innerText = inputs.uk.value || '-';
     document.getElementById("l-eu").innerText = inputs.eu.value || '-';
     document.getElementById("l-cm").innerText = inputs.cm.value || '-';
