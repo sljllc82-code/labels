@@ -43,14 +43,14 @@ body {
 .model {
   font-size: 15.2px;
   font-weight: 700;
-  margin-bottom: 4px; /* reduced to make room for color right below */
+  margin-bottom: 4px;
   line-height: 1.2;
   text-align: left;
 }
 .colorway {
   font-size: 12px;
-  font-weight: 700;
-  margin-bottom: 12px; /* space before sizes */
+  font-weight: 300; /* thinner */
+  margin-bottom: 12px;
   text-align: left;
 }
 .sizes {
@@ -79,16 +79,23 @@ body {
   font-size: 36px !important;
   line-height: 1;
 }
+/* BR size group */
+#br-group {
+  margin-top: 8px; /* gives a little separation from main sizes */
+}
+.sku-madein {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
 .sku {
   font-size: 12px;
   font-weight: 700;
-  margin-bottom: 6.4px;
-  text-align: left;
 }
 .madein {
   font-size: 10.4px;
   font-weight: 500;
-  text-align: left;
 }
 .barcode-container {
   width: 100%;
@@ -115,6 +122,7 @@ body {
   <input id="uk" placeholder="UK (9)" value="9">
   <input id="eu" placeholder="FR/EUR (44)" value="44">
   <input id="cm" placeholder="CM (28)" value="28">
+  <input id="br" placeholder="BR Size (42)" value="42">
   <input id="color" placeholder="Colorway (BLACK/RED/WHITE)" value="BLACK/RED/WHITE" class="full">
   <input id="sku" placeholder="Style Code (DZ5485-612)" value="DZ5485-612" class="full">
   <input id="upc" placeholder="UPC / Barcode Number (e.g. 196608123456)" class="full" value="196608123456">
@@ -158,9 +166,15 @@ body {
         <div class="size-label">CM</div>
         <div class="size-value" id="l-cm">28</div>
       </div>
+      <div class="size-group" id="br-group">
+        <div class="size-label">BR</div>
+        <div class="size-value" id="l-br">42</div>
+      </div>
     </div>
-    <div class="sku" id="l-sku"></div>
-    <div class="madein" id="l-madein"></div>
+    <div class="sku-madein">
+      <div class="sku" id="l-sku"></div>
+      <div class="madein" id="l-madein"></div>
+    </div>
   </div>
   
   <div class="barcode-container">
@@ -176,6 +190,7 @@ const inputs = {
   uk: document.getElementById("uk"),
   eu: document.getElementById("eu"),
   cm: document.getElementById("cm"),
+  br: document.getElementById("br"),
   color: document.getElementById("color"),
   sku: document.getElementById("sku"),
   upc: document.getElementById("upc"),
@@ -192,6 +207,7 @@ function updateLabel() {
   document.getElementById("l-uk").innerText = inputs.uk.value || '-';
   document.getElementById("l-eu").innerText = inputs.eu.value || '-';
   document.getElementById("l-cm").innerText = inputs.cm.value || '-';
+  document.getElementById("l-br").innerText = inputs.br.value || '-';
   document.getElementById("l-color").innerText = inputs.color.value.toUpperCase();
   document.getElementById("l-sku").innerText = inputs.sku.value.toUpperCase();
   document.getElementById("l-madein").innerText = inputs.madein.value;
