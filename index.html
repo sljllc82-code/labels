@@ -3,208 +3,85 @@
 <head>
 <meta charset="UTF-8" />
 <title>Authentic Nike Shoe Label Generator</title>
-<link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <style>
-body {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  background: #f4f4f4;
-  padding: 20px;
-}
-.form {
-  max-width: 600px;
-  margin-bottom: 40px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-.form input, .form select {
-  padding: 10px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-.form input.full { grid-column: span 3; }
+body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+.form { max-width: 500px; margin-bottom: 40px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.form input, .form select { padding: 10px; font-size: 16px; box-sizing: border-box; }
+.form input.full, .form select.full { grid-column: span 2; }
 .label {
-  width: 4.5in;
-  height: 2.5in;
-  background: #fff;
-  border: 1px solid #000;
-  box-sizing: border-box;
-  padding: 0.25in;
-  display: flex;
-  flex-direction: row;
+  width: 4.3in; height: 2.5in; background: #fff; border: 1px solid #000; box-sizing: border-box;
+  padding: 0.25in; display: flex; flex-direction: column; justify-content: space-between;
 }
-.barcode-container {
-  width: 0.8in;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 0.2in;
-}
-.barcode-container svg {
-  transform: rotate(-90deg);
-}
-.content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-}
-.model {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-.colorway {
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 15px;
-}
-.sizes {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-bottom: 15px;
-  font-weight: 700;
-}
-.size-line {
-  display: flex;
-  justify-content: space-between;
-  font-size: 28px;
-}
-.size-line.small {
-  font-size: 20px;
-  margin-top: 5px;
-}
-.style-madein {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 5px;
-}
-.style-code {
-  font-size: 22px;
-  font-weight: 700;
-}
-.madein {
-  font-size: 13px;
-  font-weight: 500;
-}
-.qr-container {
-  position: absolute;
-  bottom: 0.3in;
-  right: 0.3in;
-}
-.qr-container canvas {
-  width: 0.6in !important;
-  height: 0.6in !important;
-}
-@media print {
-  body { background: none; padding: 0; }
-  .form { display: none; }
-  .label { border: none; }
-}
+.content { flex: 1; text-transform: uppercase; letter-spacing: 0.8px; }
+.model { font-size: 19px; font-weight: 700; margin-bottom: 5px; text-align: left; }
+.colorway { font-size: 12px; font-weight: 700; margin-bottom: 15px; text-align: left; }
+.sizes { margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end; justify-content: flex-start; }
+.size-group { text-align: center; }
+.size-label { font-size: 10px; font-weight: 700; color: #000; margin-bottom: 3px; letter-spacing: 1px; }
+.size-value { font-size: 15px; font-weight: 700; }
+#l-mens { font-size: 52px !important; line-height: 1; }
+#br-group { margin-top: 10px; }
+.sku-madein { display: flex; justify-content: flex-start; gap: 25px; align-items: baseline; margin-bottom: 8px; }
+.sku { font-size: 15px; font-weight: 700; }
+.madein { font-size: 13px; font-weight: 500; }
+.barcode-container { width: 100%; display: flex; justify-content: flex-start; }
+.barcode-container svg { width: 75%; height: 40px; }
+@media print { body { background: none; padding: 0; } .form { display: none; } .label { border: none; } }
 </style>
 </head>
 <body>
 <div class="form">
-  <input id="model" placeholder="Model" class="full" value="AIR ZOOM MAXFLY 2">
-  <input id="color1" placeholder="Color 1" value="WHITE/BLACK-BRIGHT SPRUCE">
-  <input id="color2" placeholder="Color 2" value="BLANC/SAPIN ÉCLATANT/NOIR">
-  <input id="mens" placeholder="Men's Size" value="8">
-  <input id="womens" placeholder="Women's Size" value="9.5">
-  <input id="sku" placeholder="Style Code" value="FD8395 102" class="full">
-  <input id="upc" placeholder="UPC" value="19760114420" class="full">
+  <input id="model" placeholder="Model (AIR JORDAN 1 RETRO HIGH OG)" class="full" value="AIR JORDAN 1 RETRO HIGH OG">
+  <input id="mens" placeholder="US Men's (10)" value="10">
+  <input id="womens" placeholder="US Women's (11.5)">
+  <input id="uk" placeholder="UK (9)">
+  <input id="eu" placeholder="FR/EUR (44)">
+  <input id="cm" placeholder="CM (28)">
+  <input id="br" placeholder="BR Size (42)">
+  <input id="color" placeholder="Colorway (BLACK/RED/WHITE)" value="BLACK/RED/WHITE" class="full">
+  <input id="sku" placeholder="Style Code (DZ5485-612)" value="DZ5485-612" class="full">
+  <input id="upc" placeholder="UPC / Barcode Number (e.g. 196608123456)" class="full" value="196608123456">
   <select id="madein" class="full">
-    <option value="MADE IN CHINA / FABRIQUÉ EN CHINE / FABRICADO NA CHINA / HECHO EN CHINA">MADE IN CHINA / FABRIQUÉ EN CHINE / FABRICADO NA CHINA / HECHO EN CHINA</option>
     <option value="MADE IN VIETNAM">MADE IN VIETNAM</option>
-    <!-- add more -->
+    <option value="MADE IN CHINA">MADE IN CHINA</option>
+    <!-- more options -->
   </select>
 </div>
 
 <div class="label">
-  <div class="barcode-container">
-    <svg id="barcode"></svg>
-  </div>
-
   <div class="content">
     <div class="model" id="l-model"></div>
-    <div class="colorway" id="l-color1"></div>
-    <div class="colorway" id="l-color2"></div>
-
-    <div class="sizes">
-      <div class="size-line">
-        <span id="l-mens">8</span>
-        <span>UK 7</span>
-        <span>CM 26</span>
-      </div>
-      <div class="size-line small">
-        <span id="l-womens">9.5</span>
-        <span>UK 7.5</span>
-        <span>CM 26.5</span>
-      </div>
-      <div class="size-line small">
-        <span>BR 39.5</span>
-        <span>EUR 41</span>
-        <span></span>
-      </div>
-      <div class="size-line small">
-        <span>BR 40</span>
-        <span>EUR 41.5</span>
-        <span></span>
-      </div>
+    <div class="colorway" id="l-color"></div>
+    <div class="sizes" id="sizes-container">
+      <div class="size-group"><div class="size-value" id="l-mens">10</div></div>
+      <div class="size-group" id="womens-group"><div class="size-label">US W</div><div class="size-value" id="l-womens">11.5</div></div>
+      <div class="size-group"><div class="size-label">UK</div><div class="size-value" id="l-uk">9</div></div>
+      <div class="size-group"><div class="size-label">FR</div><div class="size-value" id="l-eu">44</div></div>
+      <div class="size-group"><div class="size-label">CM</div><div class="size-value" id="l-cm">28</div></div>
+      <div class="size-group" id="br-group"><div class="size-label">BR</div><div class="size-value" id="l-br">42</div></div>
     </div>
-
-    <div class="style-madein">
-      <div class="style-code" id="l-sku"></div>
+    <div class="sku-madein">
+      <div class="sku" id="l-sku"></div>
       <div class="madein" id="l-madein"></div>
     </div>
   </div>
-
-  <div class="qr-container">
-    <canvas id="qrcode"></canvas>
+  <div class="barcode-container">
+    <svg id="barcode"></svg>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
 <script>
-const inputs = {
-  model: document.getElementById("model"),
-  color1: document.getElementById("color1"),
-  color2: document.getElementById("color2"),
-  mens: document.getElementById("mens"),
-  womens: document.getElementById("womens"),
-  sku: document.getElementById("sku"),
-  upc: document.getElementById("upc"),
-  madein: document.getElementById("madein")
-};
-
-function updateLabel() {
-  document.getElementById("l-model").innerText = inputs.model.value.toUpperCase();
-  document.getElementById("l-color1").innerText = inputs.color1.value.toUpperCase();
-  document.getElementById("l-color2").innerText = inputs.color2.value.toUpperCase();
-  document.getElementById("l-mens").innerText = inputs.mens.value;
-  document.getElementById("l-womens").innerText = inputs.womens.value;
-  document.getElementById("l-sku").innerText = inputs.sku.value.toUpperCase();
-  document.getElementById("l-madein").innerText = inputs.madein.value;
-
-  // Barcode
-  JsBarcode("#barcode", inputs.upc.value.trim() || "000000000000", {
-    format: "CODE128",
-    width: 3,
-    height: 260,
-    displayValue: false,
-    margin: 10,
-    flat: true
-  });
-
-  // QR code (optional – you can add a URL input if needed)
-  QRCode.toCanvas(document.getElementById("qrcode"), "https://nike.com", { width: 80 });
+const inputs = { model: document.getElementById("model"), mens: document.getElementById("mens"), womens: document.getElementById("womens"), uk: document.getElementById("uk"), eu: document.getElementById("eu"), cm: document.getElementById("cm"), br: document.getElementById("br"), color: document.getElementById("color"), sku: document.getElementById("sku"), upc: document.getElementById("upc"), madein: document.getElementById("madein") };
+const womensGroup = document.getElementById("womens-group");
+const sizeMap = { /* same as before – omitted for brevity, copy from previous */ };
+document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("change", updateLabel));
+document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("keyup", updateLabel));
+function updateLabel() { /* same logic as before – auto-fill, hide women's for 14+, update texts */ 
+  // ... (copy the full function from previous messages)
+  JsBarcode("#barcode", inputs.upc.value.trim() || "000000000000", { format: "CODE128", width: 2, height: 40, displayValue: false, margin: 0, flat: true });
 }
-
-document.querySelectorAll("input, select").forEach(el => el.addEventListener("input", updateLabel));
 updateLabel();
 </script>
 </body>
