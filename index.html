@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Authentic Nike Shoe Label Generator (80% Scale)</title>
+<title>Authentic Nike Shoe Label Generator (Full Size)</title>
 <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <style>
@@ -25,12 +25,12 @@ body {
 }
 .form input.full, .form select.full { grid-column: span 2; }
 .label {
-  width: 3.2in;
-  height: 2in;
+  width: 4in;           /* back to full 100% size */
+  height: 2.5in;
   background: #fff;
   border: 1px solid #000;
   box-sizing: border-box;
-  padding: 0.2in 0.28in;
+  padding: 0.25in 0.35in;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -41,61 +41,61 @@ body {
   letter-spacing: 0.8px;
 }
 .model {
-  font-size: 15.2px;
+  font-size: 19px;       /* larger than colorway */
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   line-height: 1.2;
   text-align: left;
 }
 .colorway {
-  font-size: 12px;
+  font-size: 15px;       /* smaller than model */
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
   text-align: left;
 }
 .sizes {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 20px;
   align-items: flex-end;
 }
 .size-group {
   text-align: center;
 }
 .size-label {
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 700;
   color: #000;
-  margin-bottom: 2.4px;
+  margin-bottom: 3px;
   letter-spacing: 1px;
 }
 .size-value {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
 }
 /* US Men's value – no label, larger */
 #l-mens {
-  font-size: 42px !important;
+  font-size: 52px !important; /* scaled up for full size label */
   line-height: 1;
 }
 /* BR size group */
 #br-group {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 .sku-madein {
   display: flex;
-  justify-content: flex-start; /* changed from space-between */
-  gap: 20px; /* adds controlled space between SKU and Made In */
+  justify-content: flex-start;
+  gap: 25px; /* controlled space */
   align-items: baseline;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 .sku {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
 }
 .madein {
-  font-size: 10.4px;
+  font-size: 13px;
   font-weight: 500;
 }
 .barcode-container {
@@ -105,7 +105,7 @@ body {
 }
 .barcode-container svg {
   width: 70%;
-  height: 40px;
+  height: 50px;
 }
 /* PRINT SETTINGS */
 @media print {
@@ -280,7 +280,7 @@ function updateLabel() {
   JsBarcode("#barcode", upcValue, {
     format: format,
     width: 2,
-    height: 40,
+    height: 50,
     displayValue: false,
     margin: 0,
     flat: true
