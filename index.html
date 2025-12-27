@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>Authentic Nike Shoe Label Generator</title>
-<link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-<style>
-body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f4f4f4; padding: 20px; }
-.form { max-width: 500px; margin-bottom: 40px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-.form input, .form select { padding: 10px; font-size: 16px; box-sizing: border-box; }
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -305,84 +295,6 @@ function updateLabel() {
     margin: 0,
     flat: true
   });
-}
-updateLabel();
-</script>
-</body>
-</html>
-
-.form input.full, .form select.full { grid-column: span 2; }
-.label {
-  width: 4.3in; height: 2.5in; background: #fff; border: 1px solid #000; box-sizing: border-box;
-  padding: 0.25in; display: flex; flex-direction: column; justify-content: space-between;
-}
-.content { flex: 1; text-transform: uppercase; letter-spacing: 0.8px; }
-.model { font-size: 19px; font-weight: 700; margin-bottom: 5px; text-align: left; }
-.colorway { font-size: 12px; font-weight: 700; margin-bottom: 15px; text-align: left; }
-.sizes { margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end; justify-content: flex-start; }
-.size-group { text-align: center; }
-.size-label { font-size: 10px; font-weight: 700; color: #000; margin-bottom: 3px; letter-spacing: 1px; }
-.size-value { font-size: 15px; font-weight: 700; }
-#l-mens { font-size: 52px !important; line-height: 1; }
-#br-group { margin-top: 10px; }
-.sku-madein { display: flex; justify-content: flex-start; gap: 25px; align-items: baseline; margin-bottom: 8px; }
-.sku { font-size: 15px; font-weight: 700; }
-.madein { font-size: 13px; font-weight: 500; }
-.barcode-container { width: 100%; display: flex; justify-content: flex-start; }
-.barcode-container svg { width: 75%; height: 40px; }
-@media print { body { background: none; padding: 0; } .form { display: none; } .label { border: none; } }
-</style>
-</head>
-<body>
-<div class="form">
-  <input id="model" placeholder="Model (AIR JORDAN 1 RETRO HIGH OG)" class="full" value="AIR JORDAN 1 RETRO HIGH OG">
-  <input id="mens" placeholder="US Men's (10)" value="10">
-  <input id="womens" placeholder="US Women's (11.5)">
-  <input id="uk" placeholder="UK (9)">
-  <input id="eu" placeholder="FR/EUR (44)">
-  <input id="cm" placeholder="CM (28)">
-  <input id="br" placeholder="BR Size (42)">
-  <input id="color" placeholder="Colorway (BLACK/RED/WHITE)" value="BLACK/RED/WHITE" class="full">
-  <input id="sku" placeholder="Style Code (DZ5485-612)" value="DZ5485-612" class="full">
-  <input id="upc" placeholder="UPC / Barcode Number (e.g. 196608123456)" class="full" value="196608123456">
-  <select id="madein" class="full">
-    <option value="MADE IN VIETNAM">MADE IN VIETNAM</option>
-    <option value="MADE IN CHINA">MADE IN CHINA</option>
-    <!-- more options -->
-  </select>
-</div>
-
-<div class="label">
-  <div class="content">
-    <div class="model" id="l-model"></div>
-    <div class="colorway" id="l-color"></div>
-    <div class="sizes" id="sizes-container">
-      <div class="size-group"><div class="size-value" id="l-mens">10</div></div>
-      <div class="size-group" id="womens-group"><div class="size-label">US W</div><div class="size-value" id="l-womens">11.5</div></div>
-      <div class="size-group"><div class="size-label">UK</div><div class="size-value" id="l-uk">9</div></div>
-      <div class="size-group"><div class="size-label">FR</div><div class="size-value" id="l-eu">44</div></div>
-      <div class="size-group"><div class="size-label">CM</div><div class="size-value" id="l-cm">28</div></div>
-      <div class="size-group" id="br-group"><div class="size-label">BR</div><div class="size-value" id="l-br">42</div></div>
-    </div>
-    <div class="sku-madein">
-      <div class="sku" id="l-sku"></div>
-      <div class="madein" id="l-madein"></div>
-    </div>
-  </div>
-  <div class="barcode-container">
-    <svg id="barcode"></svg>
-  </div>
-</div>
-
-<script>
-const inputs = { model: document.getElementById("model"), mens: document.getElementById("mens"), womens: document.getElementById("womens"), uk: document.getElementById("uk"), eu: document.getElementById("eu"), cm: document.getElementById("cm"), br: document.getElementById("br"), color: document.getElementById("color"), sku: document.getElementById("sku"), upc: document.getElementById("upc"), madein: document.getElementById("madein") };
-const womensGroup = document.getElementById("womens-group");
-const sizeMap = { /* same as before – omitted for brevity, copy from previous */ };
-document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("change", updateLabel));
-document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("keyup", updateLabel));
-function updateLabel() { /* same logic as before – auto-fill, hide women's for 14+, update texts */ 
-  // ... (copy the full function from previous messages)
-  JsBarcode("#barcode", inputs.upc.value.trim() || "000000000000", { format: "CODE128", width: 2, height: 40, displayValue: false, margin: 0, flat: true });
 }
 updateLabel();
 </script>
