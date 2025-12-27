@@ -177,7 +177,8 @@ const inputs = {
   madein: document.getElementById("madein")
 };
 
-document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("input", updateLabel));
+document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("change", updateLabel));
+document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("keyup", updateLabel));
 
 function updateLabel() {
   document.getElementById("l-model").innerText = inputs.model.value.toUpperCase();
@@ -190,10 +191,26 @@ function updateLabel() {
   document.getElementById("l-sku").innerText = inputs.sku.value.toUpperCase();
   document.getElementById("l-madein").innerText = inputs.madein.value;
 
-  // Barcode generated from UPC input field only
-  const upcValue = inputs.upc.value.trim() || "000000000000";
+  const upcValue = inputs.upc.value.trim();
+  const barcodeSvg = document.getElementById("barcode");
+
+  if (upcValue === "") {
+    barcodeSvg.innerHTML = "";
+    return;
+  }
+
+  // Clear previous barcode
+  barcodeSvg.innerHTML = "";
+
+  let format = "CODE128"; // safe fallback
+  if (upcValue.length === 12 && /^\d+$/.test(upcValue)) {
+    format = "UPC";
+  } else if (upcValue.length === 13 && /^\d+$/.test(upcValue)) {
+    format = "EAN13";
+  }
+
   JsBarcode("#barcode", upcValue, {
-    format: upcValue.length === 12 ? "UPC" : (upcValue.length === 13 ? "EAN13" : "CODE128"),
+    format: format,
     width: 2,
     height: 40,
     displayValue: false,
@@ -202,6 +219,7 @@ function updateLabel() {
   });
 }
 
+// Initial generation
 updateLabel();
 </script>
 </body>
