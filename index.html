@@ -49,7 +49,7 @@ body {
 }
 .colorway {
   font-size: 12px;
-  font-weight: 300;
+  font-weight: 700;
   margin-bottom: 12px;
   text-align: left;
 }
@@ -65,8 +65,8 @@ body {
 }
 .size-label {
   font-size: 8px;
-  font-weight: 300;
-  color: #444;
+  font-weight: 700; /* changed from 300 to 700 – darker/bolder */
+  color: #000;      /* changed from #444 to #000 for full black */
   margin-bottom: 2.4px;
   letter-spacing: 1px;
 }
@@ -197,7 +197,7 @@ const inputs = {
   madein: document.getElementById("madein")
 };
 
-// Nike/Jordan men's size conversion map (US M as key)
+// Nike/Jordan men's size conversion map
 const sizeMap = {
   "3.5": { uk: "3", eu: "35.5", cm: "21.6", womens: "5", br: "33" },
   "4": { uk: "3.5", eu: "36", cm: "22", womens: "5.5", br: "34" },
@@ -219,7 +219,6 @@ const sizeMap = {
   "12": { uk: "11", eu: "46", cm: "30", womens: "13.5", br: "44" },
   "12.5": { uk: "11.5", eu: "47", cm: "30.5", womens: "14", br: "44.5" },
   "13": { uk: "12", eu: "47.5", cm: "31", womens: "14.5", br: "45" },
-  // Add more if needed for larger/smaller sizes
 };
 
 document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("change", updateLabel));
@@ -234,7 +233,6 @@ function updateLabel() {
   document.getElementById("l-sku").innerText = inputs.sku.value.toUpperCase();
   document.getElementById("l-madein").innerText = inputs.madein.value;
 
-  // Auto-fill other sizes if US Men's is provided and matches the map
   if (usMens && sizeMap[usMens]) {
     const conv = sizeMap[usMens];
     inputs.womens.value = conv.womens;
@@ -249,7 +247,6 @@ function updateLabel() {
     document.getElementById("l-cm").innerText = conv.cm;
     document.getElementById("l-br").innerText = conv.br;
   } else {
-    // Use manual inputs if no auto-fill
     document.getElementById("l-womens").innerText = inputs.womens.value || '-';
     document.getElementById("l-uk").innerText = inputs.uk.value || '-';
     document.getElementById("l-eu").innerText = inputs.eu.value || '-';
