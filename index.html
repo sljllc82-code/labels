@@ -30,13 +30,29 @@ body {
   background: #fff;
   border: 1px solid #000;
   box-sizing: border-box;
-  padding: 0.25in 0.25in;
+  padding: 0.25in;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-direction: row; /* changed to row for side-by-side layout */
+  justify-content: flex-start;
+  align-items: stretch;
+}
+.barcode-container {
+  width: 0.6in; /* fixed width for vertical barcode */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0.2in;
+}
+.barcode-container svg {
+  transform: rotate(-90deg); /* vertical barcode, reading bottom to top */
+  width: 200px;  /* tall when rotated */
+  height: 60px;
 }
 .content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
@@ -45,13 +61,11 @@ body {
   font-weight: 700;
   margin-bottom: 5px;
   line-height: 1.2;
-  text-align: left;
 }
 .colorway {
   font-size: 12px;
   font-weight: 700;
   margin-bottom: 15px;
-  text-align: left;
 }
 .sizes {
   margin-bottom: 10px;
@@ -80,7 +94,6 @@ body {
   font-size: 52px !important;
   line-height: 1;
 }
-/* BR size group */
 #br-group {
   margin-top: 10px;
 }
@@ -92,24 +105,12 @@ body {
   margin-bottom: 8px;
 }
 .sku {
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 500;
 }
 .madein {
   font-size: 13px;
   font-weight: 500;
-}
-.barcode-container {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-.barcode-container svg {
-  width: 80%; /* increased to push it further left while staying safe */
-  max-width: none;
-  height: 50px;
-  margin-left: 0; /* explicit left alignment */
 }
 /* PRINT SETTINGS */
 @media print {
@@ -147,6 +148,10 @@ body {
 </div>
 
 <div class="label">
+  <div class="barcode-container">
+    <svg id="barcode"></svg>
+  </div>
+  
   <div class="content">
     <div class="model" id="l-model"></div>
     <div class="colorway" id="l-color"></div>
@@ -180,10 +185,6 @@ body {
       <div class="sku" id="l-sku"></div>
       <div class="madein" id="l-madein"></div>
     </div>
-  </div>
-  
-  <div class="barcode-container">
-    <svg id="barcode"></svg>
   </div>
 </div>
 
@@ -300,8 +301,8 @@ function updateLabel() {
 
   JsBarcode("#barcode", upcValue, {
     format: format,
-    width: 2,
-    height: 50,
+    width: 2.2,
+    height: 200, /* taller for vertical orientation */
     displayValue: false,
     margin: 0,
     flat: true
