@@ -2,28 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Shoe Label Generator</title>
-<!-- Fonts (Nike-style substitutes) -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<title>Authentic Nike Shoe Label Generator</title>
+<!-- Fonts: Helvetica Neue for authenticity (common on real labels), fallback to Arial/sans-serif -->
+<link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <!-- Barcode library -->
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <style>
 body {
-  font-family: Inter, sans-serif;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
   background: #f4f4f4;
   padding: 20px;
 }
 .form {
-  max-width: 400px;
+  max-width: 500px;
   margin-bottom: 40px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
 }
 .form input {
-  width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
   font-size: 16px;
   box-sizing: border-box;
 }
+.form input.full { grid-column: span 2; }
 .label {
   width: 4in;
   height: 2.5in;
@@ -31,75 +33,80 @@ body {
   border: 1px solid #000;
   box-sizing: border-box;
   display: flex;
+  padding: 0.25in 0.2in;
   align-items: center;
-  padding: 0.2in;
 }
 .barcode-container {
-  width: 60px;
+  width: 70px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 0.2in;
 }
 .barcode-container svg {
-  transform: rotate(-90deg);
-  width: 180px; /* taller when rotated */
-  height: 50px;
+  transform: rotate(90deg);
+  width: 200px;
+  height: 60px;
 }
 .content {
   flex: 1;
+  padding-left: 0.2in;
   text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 0.8px;
 }
 .brand {
-  font-family: Montserrat, sans-serif;
-  font-weight: 700;
-  font-size: 20px;
-  margin-bottom: 4px;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 6px;
 }
 .model {
-  font-family: Montserrat, sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 18px;
+  line-height: 1.2;
 }
 .sizes {
-  font-size: 13px;
-  font-weight: 500;
-  margin-bottom: 10px;
-  letter-spacing: 0.5px;
+  font-size: 15px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.size-group {
+  min-width: 120px;
+}
+.size-label {
+  font-size: 11px;
+  color: #555;
+  margin-bottom: 2px;
+}
+.size-value {
+  font-size: 15px;
 }
 .details {
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.4;
+  font-size: 14px;
+  line-height: 1.5;
 }
 /* PRINT SETTINGS */
 @media print {
-  body {
-    background: none;
-    padding: 0;
-  }
-  .form {
-    display: none;
-  }
-  .label {
-    border: none;
-  }
+  body { background: none; padding: 0; }
+  .form { display: none; }
+  .label { border: none; }
 }
 </style>
 </head>
 <body>
 <div class="form">
-  <input id="brand" placeholder="Brand (NIKE)" value="NIKE">
-  <input id="model" placeholder="Model (AIR JORDAN 1 RETRO HIGH OG)">
-  <input id="mens" placeholder="Men's Size (10)" value="10">
-  <input id="womens" placeholder="Women's Size (11.5)" value="11.5">
-  <input id="uk" placeholder="UK Size (9)" value="9">
-  <input id="eu" placeholder="EU Size (44)" value="44">
+  <input id="brand" placeholder="Brand (NIKE)" value="NIKE" class="full">
+  <input id="model" placeholder="Model (AIR JORDAN 1 RETRO HIGH OG)" class="full">
+  <input id="mens" placeholder="US Men's (10)" value="10">
+  <input id="womens" placeholder="US Women's (11.5)" value="11.5">
+  <input id="uk" placeholder="UK (9)" value="9">
+  <input id="eu" placeholder="FR/EUR (44)" value="44">
   <input id="cm" placeholder="CM (28)" value="28">
-  <input id="color" placeholder="Colorway (BLACK / RED)" value="BLACK / RED">
-  <input id="sku" placeholder="Style Code / SKU (DZ5485-612)" value="DZ5485-612">
+  <input id="color" placeholder="Colorway (BLACK/RED/WHITE)" value="BLACK/RED/WHITE" class="full">
+  <input id="sku" placeholder="Style Code (DZ5485-612)" value="DZ5485-612" class="full">
 </div>
 
 <div class="label">
@@ -109,38 +116,63 @@ body {
   <div class="content">
     <div class="brand" id="l-brand">NIKE</div>
     <div class="model" id="l-model"></div>
-    <div class="sizes" id="l-sizes"></div>
+    <div class="sizes" id="l-sizes">
+      <div class="size-group">
+        <div class="size-label">US M</div>
+        <div class="size-value" id="l-mens">10</div>
+      </div>
+      <div class="size-group">
+        <div class="size-label">US W</div>
+        <div class="size-value" id="l-womens">11.5</div>
+      </div>
+      <div class="size-group">
+        <div class="size-label">UK</div>
+        <div class="size-value" id="l-uk">9</div>
+      </div>
+      <div class="size-group">
+        <div class="size-label">FR</div>
+        <div class="size-value" id="l-eu">44</div>
+      </div>
+      <div class="size-group">
+        <div class="size-label">CM</div>
+        <div class="size-value" id="l-cm">28</div>
+      </div>
+    </div>
     <div class="details">COLOR <span id="l-color"></span></div>
     <div class="details">STYLE <span id="l-sku"></span></div>
   </div>
 </div>
 
 <script>
-const brand = document.getElementById("brand");
-const model = document.getElementById("model");
-const mens = document.getElementById("mens");
-const womens = document.getElementById("womens");
-const uk = document.getElementById("uk");
-const eu = document.getElementById("eu");
-const cm = document.getElementById("cm");
-const color = document.getElementById("color");
-const sku = document.getElementById("sku");
+const inputs = {
+  brand: document.getElementById("brand"),
+  model: document.getElementById("model"),
+  mens: document.getElementById("mens"),
+  womens: document.getElementById("womens"),
+  uk: document.getElementById("uk"),
+  eu: document.getElementById("eu"),
+  cm: document.getElementById("cm"),
+  color: document.getElementById("color"),
+  sku: document.getElementById("sku")
+};
 
-const inputs = document.querySelectorAll("input");
-inputs.forEach(input => input.addEventListener("input", updateLabel));
+document.querySelectorAll("input").forEach(input => input.addEventListener("input", updateLabel));
 
 function updateLabel() {
-  document.getElementById("l-brand").innerText = brand.value.toUpperCase();
-  document.getElementById("l-model").innerText = model.value.toUpperCase();
-  document.getElementById("l-sizes").innerText = 
-    `US M ${mens.value || '-'}   US W ${womens.value || '-'}   UK ${uk.value || '-'}   FR ${eu.value || '-'}   CM ${cm.value || '-'}`;
-  document.getElementById("l-color").innerText = color.value.toUpperCase();
-  document.getElementById("l-sku").innerText = sku.value.toUpperCase();
+  document.getElementById("l-brand").innerText = inputs.brand.value.toUpperCase();
+  document.getElementById("l-model").innerText = inputs.model.value.toUpperCase();
+  document.getElementById("l-mens").innerText = inputs.mens.value || '-';
+  document.getElementById("l-womens").innerText = inputs.womens.value || '-';
+  document.getElementById("l-uk").innerText = inputs.uk.value || '-';
+  document.getElementById("l-eu").innerText = inputs.eu.value || '-';
+  document.getElementById("l-cm").innerText = inputs.cm.value || '-';
+  document.getElementById("l-color").innerText = inputs.color.value.toUpperCase();
+  document.getElementById("l-sku").innerText = inputs.sku.value.toUpperCase();
 
-  JsBarcode("#barcode", sku.value || "000000000", {
+  JsBarcode("#barcode", inputs.sku.value || "000000000", {
     format: "CODE128",
     width: 2,
-    height: 180,
+    height: 200,
     displayValue: false,
     margin: 0
   });
