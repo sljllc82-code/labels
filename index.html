@@ -5,6 +5,7 @@
 <title>Authentic Nike Shoe Label Generator (Full Size)</title>
 <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
 <style>
 body {
   font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -34,6 +35,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative; /* for absolute QR positioning */
 }
 .content {
   flex: 1;
@@ -78,13 +80,11 @@ body {
   font-size: 15px;
   font-weight: 700;
 }
-/* US Men's value – no label, larger */
 #l-mens {
   font-size: 52px !important;
   line-height: 1;
   margin-left: 0;
 }
-/* BR size group */
 #br-group {
   margin-top: 10px;
 }
@@ -101,9 +101,31 @@ body {
   font-weight: 700;
 }
 .madein {
-  font-size: 5px; /* reduced to ~8px as requested */
+  font-size: 8px;
   font-weight: 500;
-  line-height: 1.4; /* better spacing for multi-line text */
+  line-height: 1.4;
+}
+.barcode-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 0;
+}
+.barcode-container svg {
+  width: 75%;
+  height: 40px;
+}
+/* QR code in bottom right */
+.qr-container {
+  position: absolute;
+  bottom: 0.25in;
+  right: 0.25in;
+  width: 0.7in;
+  height: 0.7in;
+}
+.qr-container canvas {
+  width: 100% !important;
+  height: 100% !important;
 }
 /* PRINT SETTINGS */
 @media print {
@@ -127,10 +149,7 @@ body {
   <input id="upc" placeholder="UPC / Barcode Number (e.g. 196608123456)" class="full" value="196608123456">
  
   <select id="madein" class="full">
-    <option value="MADE IN VIETNAM / FABRIQUÉ AU VIETNAM / FABRICADO NO VIETNÃ / HECHO EN VIETNAM">MADE IN VIETNAM / 
-      FABRIQUÉ AU VIETNAM / 
-      FABRICADO NO VIETNÃ / 
-      HECHO EN VIETNAM</option>
+    <option value="MADE IN VIETNAM / FABRIQUÉ AU VIETNAM / FABRICADO NO VIETNÃ / HECHO EN VIETNAM">MADE IN VIETNAM / FABRIQUÉ AU VIETNAM / FABRICADO NO VIETNÃ / HECHO EN VIETNAM</option>
     <option value="MADE IN CHINA / FABRIQUÉ EN CHINE / FABRICADO NA CHINA / HECHO EN CHINA">MADE IN CHINA / FABRIQUÉ EN CHINE / FABRICADO NA CHINA / HECHO EN CHINA</option>
     <option value="MADE IN INDONESIA / FABRIQUÉ EN INDONÉSIE / FABRICADO NA INDONÉSIA / HECHO EN INDONESIA">MADE IN INDONESIA / FABRIQUÉ EN INDONÉSIE / FABRICADO NA INDONÉSIA / HECHO EN INDONESIA</option>
     <option value="MADE IN INDIA / FABRIQUÉ EN INDE / FABRICADO NA ÍNDIA / HECHO EN INDIA">MADE IN INDIA / FABRIQUÉ EN INDE / FABRICADO NA ÍNDIA / HECHO EN INDIA</option>
@@ -147,7 +166,6 @@ body {
     <div class="model" id="l-model"></div>
     <div class="colorway" id="l-color"></div>
     <div class="sizes" id="sizes-container">
-      <!-- US M group: no label, just the large value -->
       <div class="size-group">
         <div class="size-value" id="l-mens">10</div>
       </div>
@@ -180,6 +198,11 @@ body {
  
   <div class="barcode-container">
     <svg id="barcode"></svg>
+  </div>
+
+  <!-- QR code bottom right -->
+  <div class="qr-container">
+    <canvas id="qrcode"></canvas>
   </div>
 </div>
 <script>
@@ -285,6 +308,13 @@ function updateLabel() {
     displayValue: false,
     margin: 0,
     flat: true
+  });
+
+  // Add QR code bottom right linking to nike.com
+  QRCode.toCanvas(document.getElementById("qrcode"), "https://www.nike.com", {
+    width: 70,
+    margin: 2,
+    color: { dark: '#000000', light: '#ffffff' }
   });
 }
 updateLabel();
