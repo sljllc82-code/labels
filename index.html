@@ -39,8 +39,25 @@ body {
   padding: 0.2in;
   box-sizing: border-box;
   border: 1px solid #000;
+
+  display: flex;
+  align-items: center;
 }
 
+/* Barcode */
+.barcode {
+  margin-right: 10px;
+  transform: rotate(-90deg); /* Rotate barcode vertically */
+  transform-origin: top left;
+}
+
+/* Text content next to barcode */
+.label-content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Text styling */
 .brand {
   font-family: Montserrat, sans-serif;
   font-weight: 600;
@@ -62,10 +79,6 @@ body {
 .details {
   font-size: 11px;
   margin-bottom: 6px;
-}
-
-.barcode {
-  margin-top: 4px;
 }
 
 /* PRINT SETTINGS */
@@ -101,15 +114,15 @@ body {
 </div>
 
 <div class="label">
-  <div class="brand" id="l-brand">NIKE</div>
-  <div class="model" id="l-model"></div>
+  <svg id="barcode" class="barcode"></svg>
 
-  <div class="sizes" id="l-sizes"></div>
-
-  <div class="details" id="l-color"></div>
-  <div class="details" id="l-sku"></div>
-
-  <svg id="barcode"></svg>
+  <div class="label-content">
+    <div class="brand" id="l-brand">NIKE</div>
+    <div class="model" id="l-model"></div>
+    <div class="sizes" id="l-sizes"></div>
+    <div class="details" id="l-color"></div>
+    <div class="details" id="l-sku"></div>
+  </div>
 </div>
 
 <script>
