@@ -31,7 +31,7 @@ body {
   background: #fff;
   border: 1px solid #000;
   box-sizing: border-box;
-  padding: 0.25in 0.3in; /* balanced padding */
+  padding: 0.25in 0.35in; /* more horizontal padding to give safe space */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -46,6 +46,7 @@ body {
   font-weight: 700;
   margin-bottom: 20px;
   line-height: 1.2;
+  text-align: left;
 }
 .sizes {
   font-size: 15px;
@@ -53,7 +54,6 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: center; /* centers the size groups */
 }
 .size-group {
   text-align: center;
@@ -73,35 +73,34 @@ body {
   font-size: 15px;
   font-weight: 700;
   margin-bottom: 8px;
-  text-align: center;
+  text-align: left;
 }
 .sku {
   font-size: 15px;
   font-weight: 700;
   margin-bottom: 8px;
-  text-align: center;
+  text-align: left;
 }
 .madein {
   font-size: 13px;
   font-weight: 500;
   margin-bottom: 12px;
-  text-align: center;
+  text-align: left;
 }
 .barcode-container {
   width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
 }
 .barcode-container svg {
-  width: 60%; /* reduced to ensure it fits comfortably */
-  max-width: 2.8in;
-  height: 50px;
+  width: 65%; /* safe width that fits within padding */
+  height: 48px;
 }
 .barcode-container canvas {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
 }
 /* PRINT SETTINGS */
 @media print {
@@ -204,9 +203,9 @@ function updateLabel() {
   JsBarcode("#barcode", inputs.sku.value || "000000000", {
     format: "CODE128",
     width: 2,
-    height: 50,
+    height: 48,
     displayValue: false,
-    margin: 10,
+    margin: 0,
     flat: true
   });
 
@@ -214,7 +213,7 @@ function updateLabel() {
   const qrUrl = inputs.qrUrl.value.trim();
   if (qrUrl) {
     QRCode.toCanvas(qrCanvas, qrUrl, {
-      width: 50,
+      width: 48,
       margin: 1,
       color: { dark: '#000000', light: '#ffffff' }
     });
