@@ -57,11 +57,32 @@ body {
 }
 .sizes {
   margin-bottom: 10px;
+  text-align: left;
+}
+.mens-size {
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.womens-size {
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.separator {
+  width: 100%;
+  height: 1px;
+  background: #000;
+  margin: 10px 0;
+}
+.other-sizes {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  align-items: flex-end;
-  justify-content: flex-start;
+  font-size: 15px;
+  font-weight: 700;
 }
 .size-group {
   text-align: center;
@@ -76,13 +97,6 @@ body {
 .size-value {
   font-size: 15px;
   font-weight: 700;
-}
-#l-mens {
-  font-size: 52px !important;
-  line-height: 1;
-}
-#br-group {
-  margin-top: 10px;
 }
 .sku-madein {
   display: flex;
@@ -109,7 +123,6 @@ body {
   width: 75%;
   height: 40px;
 }
-/* QR code bottom right - now with visible fallback if QR fails */
 .qr-container {
   position: absolute;
   bottom: 0.2in;
@@ -119,18 +132,10 @@ body {
   background: white;
   border: 1px solid #000;
   box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 .qr-container canvas {
   width: 100% !important;
   height: 100% !important;
-}
-.qr-fallback {
-  font-size: 10px;
-  text-align: center;
-  color: #000;
 }
 @media print {
   body { background: none; padding: 0; }
@@ -153,9 +158,16 @@ body {
   <input id="upc" placeholder="UPC / Barcode Number (e.g. 196608123456)" class="full" value="196608123456">
  
   <select id="madein" class="full">
-    <option value="MADE IN VIETNAM / FABRIQUÉ AU VIETNAM / FABRICADO NO VIETNÃ / HECHO EN VIETNAM">MADE IN VIETNAM / FABRIQUÉ AU VIETNAM / FABRICADO NO VIETNÃ / HECHO EN VIETNAM</option>
-    <option value="MADE IN CHINA / FABRIQUÉ EN CHINE / FABRICADO NA CHINA / HECHO EN CHINA">MADE IN CHINA / FABRIQUÉ EN CHINE / FABRICADO NA CHINA / HECHO EN CHINA</option>
-    <!-- other options -->
+    <option value="MADE IN VIETNAM / FABRIQUÉ AU VIETNAM / FABRICADO NO VIETNÃ / HECHO EN VIETNAM">MADE IN VIETNAM</option>
+    <option value="MADE IN CHINA / FABRIQUÉ EN CHINE / FABRICADO NA CHINA / HECHO EN CHINA">MADE IN CHINA</option>
+    <option value="MADE IN INDONESIA / FABRIQUÉ EN INDONÉSIE / FABRICADO NA INDONÉSIA / HECHO EN INDONESIA">MADE IN INDONESIA</option>
+    <option value="MADE IN INDIA / FABRIQUÉ EN INDE / FABRICADO NA ÍNDIA / HECHO EN INDIA">MADE IN INDIA</option>
+    <option value="MADE IN THAILAND / FABRIQUÉ EN THAÏLANDE / FABRICADO NA TAILÂNDIA / HECHO EN TAILANDIA">MADE IN THAILAND</option>
+    <option value="MADE IN KOREA / FABRIQUÉ EN CORÉE / FABRICADO NA COREIA / HECHO EN COREA">MADE IN KOREA</option>
+    <option value="MADE IN TAIWAN / FABRIQUÉ À TAÏWAN / FABRICADO EM TAIWAN / HECHO EN TAIWÁN">MADE IN TAIWAN</option>
+    <option value="MADE IN PHILIPPINES / FABRIQUÉ AUX PHILIPPINES / FABRICADO NAS FILIPINAS / HECHO EN FILIPINAS">MADE IN PHILIPPINES</option>
+    <option value="MADE IN MALAYSIA / FABRIQUÉ EN MALAISIE / FABRICADO NA MALÁSIA / HECHO EN MALASIA">MADE IN MALAYSIA</option>
+    <option value="MADE IN BRAZIL / FABRIQUÉ AU BRÉSIL / FABRICADO NO BRASIL / HECHO EN BRASIL">MADE IN BRAZIL</option>
   </select>
 </div>
 
@@ -163,29 +175,27 @@ body {
   <div class="content">
     <div class="model" id="l-model"></div>
     <div class="colorway" id="l-color"></div>
-    <div class="sizes" id="sizes-container">
-      <div class="size-group">
-        <div class="size-value" id="l-mens">10</div>
-      </div>
-      <div class="size-group" id="womens-group">
-        <div class="size-label">US W</div>
-        <div class="size-value" id="l-womens">11.5</div>
-      </div>
-      <div class="size-group">
-        <div class="size-label">UK</div>
-        <div class="size-value" id="l-uk">9</div>
-      </div>
-      <div class="size-group">
-        <div class="size-label">FR</div>
-        <div class="size-value" id="l-eu">44</div>
-      </div>
-      <div class="size-group">
-        <div class="size-label">CM</div>
-        <div class="size-value" id="l-cm">28</div>
-      </div>
-      <div class="size-group" id="br-group">
-        <div class="size-label">BR</div>
-        <div class="size-value" id="l-br">42</div>
+    <div class="sizes">
+      <div class="mens-size" id="l-mens">10</div>
+      <div class="womens-size" id="l-womens">11.5</div>
+      <div class="separator"></div>
+      <div class="other-sizes">
+        <div class="size-group">
+          <div class="size-label">UK</div>
+          <div class="size-value" id="l-uk">9</div>
+        </div>
+        <div class="size-group">
+          <div class="size-label">FR</div>
+          <div class="size-value" id="l-eu">44</div>
+        </div>
+        <div class="size-group">
+          <div class="size-label">CM</div>
+          <div class="size-value" id="l-cm">28</div>
+        </div>
+        <div class="size-group" id="br-group">
+          <div class="size-label">BR</div>
+          <div class="size-value" id="l-br">42</div>
+        </div>
       </div>
     </div>
     <div class="sku-madein">
@@ -198,10 +208,8 @@ body {
     <svg id="barcode"></svg>
   </div>
 
-  <!-- QR code bottom right -->
   <div class="qr-container">
     <canvas id="qrcode"></canvas>
-    <div class="qr-fallback" style="display:none;">QR<br>ERROR</div>
   </div>
 </div>
 
@@ -219,8 +227,34 @@ const inputs = {
   upc: document.getElementById("upc"),
   madein: document.getElementById("madein")
 };
-const womensGroup = document.getElementById("womens-group");
-const sizeMap = { /* same as before */ };
+
+const sizeMap = {
+  "3.5": { uk: "3", eu: "35.5", cm: "21.6", womens: "5", br: "33" },
+  "4": { uk: "3.5", eu: "36", cm: "22", womens: "5.5", br: "34" },
+  "4.5": { uk: "4", eu: "36.5", cm: "22.5", womens: "6", br: "34.5" },
+  "5": { uk: "4.5", eu: "37.5", cm: "23", womens: "6.5", br: "35" },
+  "5.5": { uk: "5", eu: "38", cm: "23.5", womens: "7", br: "35.5" },
+  "6": { uk: "5.5", eu: "38.5", cm: "24", womens: "7.5", br: "36" },
+  "6.5": { uk: "6", eu: "39", cm: "24.5", womens: "8", br: "37" },
+  "7": { uk: "6", eu: "40", cm: "25", womens: "8.5", br: "38" },
+  "7.5": { uk: "6.5", eu: "40.5", cm: "25.5", womens: "9", br: "38.5" },
+  "8": { uk: "7", eu: "41", cm: "26", womens: "9.5", br: "39" },
+  "8.5": { uk: "7.5", eu: "42", cm: "26.5", womens: "10", br: "40" },
+  "9": { uk: "8", eu: "42.5", cm: "27", womens: "10.5", br: "40.5" },
+  "9.5": { uk: "8.5", eu: "43", cm: "27.5", womens: "11", br: "41" },
+  "10": { uk: "9", eu: "44", cm: "28", womens: "11.5", br: "42" },
+  "10.5": { uk: "9.5", eu: "44.5", cm: "28.5", womens: "12", br: "42.5" },
+  "11": { uk: "10", eu: "45", cm: "29", womens: "12.5", br: "43" },
+  "11.5": { uk: "10.5", eu: "45.5", cm: "29.5", womens: "13", br: "43.5" },
+  "12": { uk: "11", eu: "46", cm: "30", womens: "13.5", br: "44" },
+  "12.5": { uk: "11.5", eu: "47", cm: "30.5", womens: "14", br: "44.5" },
+  "13": { uk: "12", eu: "47.5", cm: "31", womens: "14.5", br: "45" },
+  "14": { uk: "13", eu: "48.5", cm: "32", womens: "", br: "46" },
+  "15": { uk: "14", eu: "49.5", cm: "33", womens: "", br: "47" },
+  "16": { uk: "15", eu: "50.5", cm: "34", womens: "", br: "48" },
+  "17": { uk: "16", eu: "51.5", cm: "35", womens: "", br: "49" },
+  "18": { uk: "17", eu: "52.5", cm: "36", womens: "", br: "50" }
+};
 
 document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("change", updateLabel));
 document.querySelectorAll("input, select").forEach(elem => elem.addEventListener("keyup", updateLabel));
@@ -230,6 +264,7 @@ function updateLabel() {
   const usMens = parseFloat(usMensStr);
   document.getElementById("l-model").innerText = inputs.model.value.toUpperCase();
   document.getElementById("l-mens").innerText = usMensStr || '-';
+  document.getElementById("l-womens").innerText = inputs.womens.value || '-';
   document.getElementById("l-color").innerText = inputs.color.value.toUpperCase();
   document.getElementById("l-sku").innerText = inputs.sku.value.toUpperCase();
   document.getElementById("l-madein").innerText = inputs.madein.value;
@@ -244,29 +279,13 @@ function updateLabel() {
     document.getElementById("l-eu").innerText = conv.eu;
     document.getElementById("l-cm").innerText = conv.cm;
     document.getElementById("l-br").innerText = conv.br;
-    if (usMens >= 14 || !conv.womens) {
-      womensGroup.style.display = "none";
-      inputs.womens.value = "";
-    } else {
-      womensGroup.style.display = "";
-      inputs.womens.value = conv.womens;
-      document.getElementById("l-womens").innerText = conv.womens;
-    }
   } else {
     document.getElementById("l-uk").innerText = inputs.uk.value || '-';
     document.getElementById("l-eu").innerText = inputs.eu.value || '-';
     document.getElementById("l-cm").innerText = inputs.cm.value || '-';
     document.getElementById("l-br").innerText = inputs.br.value || '-';
-    if (usMens >= 14) {
-      womensGroup.style.display = "none";
-      inputs.womens.value = "";
-    } else {
-      womensGroup.style.display = "";
-      document.getElementById("l-womens").innerText = inputs.womens.value || '-';
-    }
   }
 
-  // Barcode
   const upcValue = inputs.upc.value.trim();
   const barcodeSvg = document.getElementById("barcode");
   if (upcValue) {
@@ -284,28 +303,11 @@ function updateLabel() {
     });
   }
 
-  // QR Code - forced black, with fallback text if generation fails
-  const qrCanvas = document.getElementById("qrcode");
-  const fallback = qrCanvas.nextElementSibling;
-  fallback.style.display = "none";
-
-  try {
-    QRCode.toCanvas(qrCanvas, "https://www.nike.com", {
-      width: 80,
-      margin: 2,
-      color: {
-        dark: "#000000",
-        light: "#FFFFFF"
-      }
-    }, function (error) {
-      if (error) {
-        console.error(error);
-        fallback.style.display = "block";
-      }
-    });
-  } catch (e) {
-    fallback.style.display = "block";
-  }
+  QRCode.toCanvas(document.getElementById("qrcode"), "https://www.nike.com", {
+    width: 80,
+    margin: 2,
+    color: { dark: "#000000", light: "#FFFFFF" }
+  });
 }
 
 updateLabel();
