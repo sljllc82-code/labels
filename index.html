@@ -33,7 +33,7 @@ body {
   padding: 0.25in;
   display: flex;
   flex-direction: row;
-  overflow: visible; /* crucial to show full rotated barcode */
+  overflow: visible;
 }
 .barcode-container {
   width: 0.7in;
@@ -44,6 +44,8 @@ body {
 }
 .barcode-container svg {
   transform: rotate(-90deg);
+  width: 320px !important; /* force tall after rotation */
+  height: auto !important;
 }
 .content {
   flex: 1;
@@ -281,7 +283,7 @@ function updateLabel() {
   JsBarcode("#barcode", upcValue, {
     format: format,
     width: 3,
-    height: 320,  // increased even more for guaranteed vertical length
+    height: 320,  // very tall horizontal → long vertical after rotation
     displayValue: false,
     margin: 10,
     flat: true
